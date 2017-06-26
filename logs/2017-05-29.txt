@@ -1,0 +1,2 @@
+Fallo al ejecutarse la consulta setVotoEvento en UPDATE:  (1064)You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '+ 1  WHERE id_votacion_evento = 3' at line 1.
+Fallo al ejecutarse la consulta setVotoEvento en UPDATE:  (1064)You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '+ 1  WHERE id_votacion_evento = 3' at line 1.

@@ -1,0 +1,2 @@
+Fallo al ejecutarse la consulta getEventos en cualquier momento:  (1064)You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY fechainicio ASC' at line 5.
+Fallo al ejecutarse la consulta getEventosConFiltro en la  :  (0).

@@ -1,0 +1,1 @@
+Fallo al ejecutarse la consulta setEvento:  (2031)No data supplied for parameters in prepared statement.

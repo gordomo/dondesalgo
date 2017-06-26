@@ -1,0 +1,2 @@
+Fallo al ejecutarse la consulta getIdcodigo:  ().
+Fallo al ejecutarse la consulta getIdcodigo:  ().
