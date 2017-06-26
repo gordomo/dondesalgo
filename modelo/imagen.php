@@ -61,8 +61,10 @@
 
                         while (false !== ($archivo = readdir($directorio))) //obtenemos un archivo y luego otro sucesivamente
                         {
-                           
-                           unlink($rutaUsuario . '/Foto Perfil/' . $archivo);
+                          $ruta = $rutaUsuario . '/Foto Perfil/' . $archivo;
+                          
+                          chmod($ruta, 0777); 
+                          unlink($ruta);
 
                         }
 
