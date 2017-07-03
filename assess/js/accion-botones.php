@@ -176,30 +176,56 @@
                                     
             break;
 
-            case (isset($_POST['contacto_usuario']) && isset($msje_exito_contacto)):
+            case (isset($_POST['contacto_usuario'])):
+                
+                
+                if(isset($msje_exito_contacto))
+                {    
 ?>                   
-                 contacto();
+                    contacto();
 
-                 $.confirm({
-                    title: '¡Listo!',
-                    content: 'Has enviado el mensaje con exito.',
-                    type: 'purple',
-                    typeAnimated: true,
-                    buttons: {
-                                OK:  
-                                  {   
-                                      btnClass: 'btn-purple',
+                    $.confirm({
+                       title: '¡Listo!',
+                       content: 'Has enviado el mensaje con exito.',
+                       type: 'purple',
+                       typeAnimated: true,
+                       buttons: {
+                                   OK:  
+                                     {   
+                                         btnClass: 'btn-purple',
 
-                                       action: function()
-                                      {
-                                        registro();
-                                      }
+                                          action: function()
+                                         {
+                                           registro();
+                                         }
 
-                                     
-                                  },
-                              }
-                  });
-<?php                     
+
+                                     },
+                                 }
+                     });
+<?php
+                }
+                elseif(isset($msje_error_contacto)) 
+                {
+?>                    
+                     contacto();
+
+                     $.alert({
+                     title: '¡Error inesperado!',
+                     content: 'El mensaje no ha llegado a nosotros, por favor intente mas tarde.',
+                     type: 'red',
+                     typeAnimated: true,
+                     buttons: {
+                                 OK:  
+                                   {   
+                                       btnClass: 'btn-red',
+
+                                   },
+                               }
+                      }); 
+                  
+<?php 
+                }
             break;
 
             case (isset($_POST['validar_codigo'])):
