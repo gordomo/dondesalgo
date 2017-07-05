@@ -305,9 +305,17 @@
           
          $envio_mail= new mails();
          
-         $envio_mail->enviar_contacto($nombre,$apellido,$telefono,$email,$comentario);
-
-         $msje_exito_contacto='activado';  
+         $resEnvio = $envio_mail->enviar_contacto($nombre,$apellido,$telefono,$email,$comentario);
+         
+         if($resEnvio == 1)
+         {
+              $msje_exito_contacto='activado';
+         }
+         else
+         {
+             
+              $msje_error_contacto = 'activado';
+         }    
         
 
       break;
