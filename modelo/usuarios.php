@@ -145,6 +145,10 @@
                case 3:
                  $_SESSION["organizador"] = $fila['tipo'];
                break;
+
+               case 100:
+                 $_SESSION["admin"] = $fila['tipo'];
+               break;
                
                default:
                   # code...
