@@ -1,7 +1,9 @@
 <br>
 
 <?php
-    if(isset($_SESSION['boliche']) || isset($_SESSION['organizador']))
+
+    
+    if(isset($_SESSION['boliche']) || isset($_SESSION['organizador']) || isset($_SESSION['admin']))
     {
       
 ?>           
@@ -25,24 +27,26 @@
                         <div  class="col-xs-12 col-sm-12 col-md-5 col-lg-5" style="text-align: center;">
                             <p><b><?=$_SESSION['nombre'];?></b></p>    
                         </div>
- <?php
-        if($fotoPerfil->getPerfil() == 'nada')
-        { 
- ?>                  
-                        <div  class="form-group col-xs-12 col-sm-12 col-md-2 col-lg-2 sin-padding">
-                            <label for="perfil" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="div_perfil2" align="center" data-container="body" data-toggle="tooltip" data-placement="bottom" title="Agrega una foto de perfil aqui.">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true" id="icono_perfil2" ></span>
-                                    <input type="file" id="perfil" name="perfil" style="display:none;">
-                            </label>
-                            <label for="perfil" id="perfil-error"  class="error" style="display: none;"></label>
-                        </div>    
+<?php   if(!isset($_SESSION['admin']))
+        {
+            if($fotoPerfil->getPerfil() == 'nada')
+            { 
+?>                  
+                            <div  class="form-group col-xs-12 col-sm-12 col-md-2 col-lg-2 sin-padding">
+                                
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true" id="icono_perfil2" ></span>
+                                        <input type="file" id="perfil" name="perfil" style="display:none;">
+                                
+                                <label for="perfil" id="perfil-error"  class="error" style="display: none;"></label>
+                            </div>    
 <?php
-        }
-        else
-        {    
+            }
+            else
+            {    
 ?>  
-                        <div  class="col-xs-12 col-sm-12 col-md-2 col-lg-2"></div>
+                            <div  class="col-xs-12 col-sm-12 col-md-2 col-lg-2"></div>
 <?php
+            }
         }
 ?>                      
                         <div  class="col-xs-12 col-sm-12 col-md-5 col-lg-5"></div>
@@ -58,7 +62,7 @@
                                 <label for="titulo_evento" class="control-label col-xs-12 col-sm-12 col-md-3 col-lg-3">Titulo:</label>
                
                                 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9" id="campo" >
-                                    <input class="form-control" id="titulo_evento" name="titulo_evento"  placeholder="¿ Como se llama el evento ?" maxlength="40" >
+                                    <input class="form-control" id="titulo_evento" name="titulo_evento"  placeholder="¿ Como se llama el evento ?"  maxlength="40" <?php if(isset($_SESSION['admin'])):?> value="<?= $evento['nombreevento']; endif;?>">
                                 </div>
                             </div>
                             <div  class="col-xs-2 col-sm-2 col-md-2 col-lg-2"><span class="glyphicon glyphicon-ok-sign hidden" id="titulo_evento2"></span></div>
@@ -69,7 +73,17 @@
                     </div>
 
 <?php
-        if(isset($_SESSION['organizador']))
+        
+        if(isset($tipoUsuario['tipo']))
+        {
+            $tipoUsuario = $tipoUsuario['tipo'];
+        }
+        else
+        {
+            $tipoUsuario = 0;
+        }
+        
+        if(isset($_SESSION['organizador']) || $tipoUsuario == 3)
         {    
 ?>
                      <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" style="margin-bottom: 20px;">
@@ -81,10 +95,30 @@
                                 <label for="tipo_evento" class="control-label col-xs-12 col-sm-12 col-md-3 col-lg-3">Tipo evento:</label>
                                 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9" style="text-align: center;">
                                       <select name='tipo_evento' id='tipo_evento' class="form-control" >
+                        <?php
+                                        $cond = 0;
+                                        
+                                        if(isset($_SESSION['admin']))
+                                        {
+                                            //Asigna condiciones para que cuando se edite el evento, pueda aparecer la opcion selecionada correctamente
+                                            switch($evento['tipo']):
+                                            case 2:
+                                                $cond = 2;
+                                            break;
+                                            case 4:
+                                                $cond = 4;
+                                            break;
+                                            case 5                     :
+                                                $cond = 5;
+                                            break;
+                                            endswitch;
+                                        }
+                                        
+                        ?>
                                         <option value='' >Ninguno</option>
-                                        <option value='2'>cachengue</option>
-                                        <option value='4'>Previa</option>
-                                        <option value='5'>electronica</option>
+                                        <option value='2' <?php if($cond == 2): ?> selected <?php endif; ?> >Cachengue</option>
+                                        <option value='4' <?php if($cond == 4): ?> selected <?php endif; ?> >Previa</option>
+                                        <option value='5' <?php if($cond == 5): ?> selected <?php endif; ?> >Electronica</option>
                                       </select>
                                 </div>
                             </div>   
@@ -107,7 +141,7 @@
                             <div  class="form-group col-xs-10 col-sm-10 col-md-10 col-lg-10 sin-padding">
                                  <label for="fecha_evento" class="control-label col-xs-12 col-sm-12 col-md-3 col-lg-3">Fecha:</label>
                                 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9" style="text-align: center;">
-                                      <input class="form-control" id="fecha_evento" name="fecha_evento" placeholder="¿Cuando se hara el evento?" style="cursor: pointer;" >
+                                      <input class="form-control" id="fecha_evento" name="fecha_evento" placeholder="¿Cuando se hara el evento?" style="cursor: pointer;" <?php if(isset($_SESSION['admin'])):?> value="<?= $fecha_inicio; endif;?>" >
                                       <span class="glyphicon glyphicon-remove-circle" id="reset-fecha-evento"  style="color:red; cursor: pointer;"></span>
                                 </div>
                             </div>   
@@ -126,7 +160,7 @@
                             <div  class="form-group col-xs-10 col-sm-10 col-md-10 col-lg-10 sin-padding">
                                  <label for="hora_inicio" class="control-label col-xs-12 col-sm-12 col-md-3 col-lg-3">Hora inicio:</label>
                                 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9" style="text-align: center;">
-                                      <input class="form-control" id="hora_inicio" name="hora_inicio" placeholder="¿ A que hora empieza ?" style="cursor: pointer;" >
+                                      <input class="form-control" id="hora_inicio" name="hora_inicio" placeholder="¿ A que hora empieza ?" style="cursor: pointer;" <?php if(isset($_SESSION['admin'])):?> value="<?= $evento['horainicio']; endif;?>">
                                 </div>
                             </div>   
                             <div  class="col-xs-2 col-sm-2 col-md-2 col-lg-2"><span class="glyphicon glyphicon-ok-sign hidden" id="hora_inicio2"></span></div>   
@@ -144,7 +178,7 @@
                             <div  class="form-group col-xs-10 col-sm-10 col-md-10 col-lg-10 sin-padding">
                                  <label for="hora_fin" class="control-label col-xs-12 col-sm-12 col-md-3 col-lg-3">Hora fin:</label>
                                 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9" style="text-align: center;">
-                                      <input class="form-control" id="hora_fin" name="hora_fin" placeholder="¿ A que hora termina ?" style="cursor: pointer;" >
+                                      <input class="form-control" id="hora_fin" name="hora_fin" placeholder="¿ A que hora termina ?" style="cursor: pointer;" <?php if(isset($_SESSION['admin'])):?> value="<?= $evento['horafin']; endif;?>">
                                 </div>
                             </div>   
                             <div  class="col-xs-2 col-sm-2 col-md-2 col-lg-2"><span class="glyphicon glyphicon-ok-sign hidden" id="hora_fin2"></span></div>   
@@ -154,7 +188,7 @@
 
                     </div>
 <?php
-        if(isset($_SESSION['organizador']))
+        if(isset($_SESSION['organizador']) || isset($_SESSION['admin']))
         {    
 ?>                    
 
@@ -166,7 +200,7 @@
                             <div  class="form-group col-xs-10 col-sm-10 col-md-10 col-lg-10 sin-padding">
                                 <label for="direccion" class="control-label col-xs-12 col-sm-12 col-md-3 col-lg-3">Direccion:</label>
                                 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9" style="text-align: center;">
-                                      <input class="form-control" id="direccion" name="direccion" placeholder="¿ Donde queda ?"  >
+                                      <input class="form-control" id="direccion" name="direccion" placeholder="¿ Donde queda ?" <?php if(isset($_SESSION['admin'])):?> value="<?= $evento['direccion']; endif;?>" >
                                 </div>
                             </div>   
                             <div  class="col-xs-2 col-sm-2 col-md-2 col-lg-2"><span class="glyphicon glyphicon-ok-sign hidden" id="direccion2"></span></div>   
@@ -176,8 +210,7 @@
 
                     </div>
 <?php
-        }
-
+        }     
 ?>                    
 
                     <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" style="margin-bottom: 35px;">
@@ -203,7 +236,7 @@
                                 <label for="descripcion_evento" class="control-label col-xs-12 col-sm-12 col-md-3 col-lg-3"></label>
                
                                 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9" id="campo" >
-                                    <textarea class="form-control" id="descripcion_evento" name="descripcion_evento"  placeholder="Escribe una breve descripcion del evento" ></textarea>
+                                    <textarea class="form-control" id="descripcion_evento" name="descripcion_evento"  placeholder="Escribe una breve descripcion del evento" ><?php if(isset($_SESSION['admin'])): echo $descripcion; endif;?> </textarea>
                                 </div>
                             </div>
                             <div  class="col-xs-2 col-sm-2 col-md-2 col-lg-2"><span class="glyphicon glyphicon-ok-sign hidden" id="descripcion_evento2"></span></div>
@@ -218,7 +251,22 @@
                 <div  class="col-xs-12 col-sm-12 col-md-2 col-lg-2"></div>
 
                 <div  class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" align="center">
-                    <button class="btn btn-primary" id="crear_evento" name="crear_evento" value="Submit">crear evento</button>
+<?php
+                    //Verifica si la sesión es admin, entonces entiende que se va a editar un evento y no crearlo
+                    if(isset($_SESSION['admin']))
+                    {
+?>                      <input type="hidden" name="idevento" value="<?= $evento['ideventos']; ?> ">
+                        <button class="btn btn-primary" id="editar_evento" name="editar_evento" value="Submit">Editar evento</button>
+<?php                          
+                    }
+                    else
+                    {
+?>                     
+                        <button class="btn btn-primary" id="crear_evento" name="crear_evento" value="Submit">Crear evento</button>
+<?php                    
+                    }
+?>                     
+                    
                     <input type="reset" class="btn resetiar" value="Reset" />   
                 </div>       
 

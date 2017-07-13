@@ -95,7 +95,7 @@
             break;
 
             case (isset($mensaje_usuario_repetido)):
-
+            
                   if(isset($_POST['registrar_persona']))
                   {  
 ?>                   
@@ -314,31 +314,108 @@
 
                 if(isset($_POST['crear_evento']))
                 {
-
-?>                   
+                    
+?>
                     evento();
 
                     $.confirm({
-                    title: '¡Listo!',
-                    content: 'Has creado el evento con exito.',
-                    type: 'purple',
-                    typeAnimated: true,
-                    buttons: {
-                                OK:  
-                                  {   
-                                      btnClass: 'btn-purple',
+                            title: '¡Listo!',
+                            content: 'Has creado el evento con exito.',
+                            type: 'purple',
+                            typeAnimated: true,
+                            buttons: {
+                                        OK:  
+                                          {   
+                                              btnClass: 'btn-purple',
 
-                                       action: function()
-                                      {
-                                        boliches();
+                                               action: function()
+                                              {
+                                                boliches();
+                                              }
+
+
+                                          },
                                       }
+                            });
+<?php                        
+                }
+                elseif (isset($_POST['editar_evento'])) 
+                {
+?>                    
+                    boliches();
+                    
+                    $.confirm({
+                            title: '¡Listo!',
+                            content: 'El evento ha sido editado con exito.',
+                            type: 'purple',
+                            typeAnimated: true,
+                            buttons: {
+                                        OK:  
+                                          {   
+                                              btnClass: 'btn-purple',
 
-                                     
-                                  },
-                              }
-                    });
+                                               action: function()
+                                              {
+                                                boliches();
+                                              }
 
-<?php                     
+
+                                          },
+                                      }
+                            });
+<?php                            
+                }
+                elseif (isset($eliminarAdm)) 
+                {
+?>                    
+                    boliches();
+                    
+                    $.confirm({
+                            title: 'Evento eliminado',
+                            content: 'El evento ha sido eliminado con exito.',
+                            type: 'purple',
+                            typeAnimated: true,
+                            buttons: {
+                                        OK:  
+                                          {   
+                                              btnClass: 'btn-purple',
+
+                                               action: function()
+                                              {
+                                                boliches();
+                                              }
+
+
+                                          },
+                                      }
+                            });
+<?php                    
+                }
+                elseif (isset($republicarAdm)) 
+                {
+?>                    
+                    boliches();
+                    
+                    $.confirm({
+                            title: 'Evento republicado',
+                            content: 'El evento ha sido republicado con exito.',
+                            type: 'purple',
+                            typeAnimated: true,
+                            buttons: {
+                                        OK:  
+                                          {   
+                                              btnClass: 'btn-purple',
+
+                                               action: function()
+                                              {
+                                                boliches();
+                                              }
+
+
+                                          },
+                                      }
+                            });
+<?php                    
                 }
                 elseif (isset($_POST['crear_perfil'])) 
                 {
@@ -359,7 +436,8 @@
                                   }
                       });
 <?php                 
-                }  
+                }
+                
                     
             break;
 
@@ -390,11 +468,34 @@
 <?php                     
             break;
 
+            case (isset($eliminarAdm)):
+             die('asd');
+?>                 
+             boliches();
+<?php                     
+            break;
 
             case (isset($_GET['previa']) || isset($_POST['enviar_filtro_bar'])):  
 ?>                 
              previas();
 <?php                     
+            break;
+        
+            case (isset($band)):
+               
+                if($band == 'editar')
+                {
+?>
+                    evento();
+<?php
+                }
+                else
+                {                  
+?>
+                    boliches();
+<?php
+                }
+                
             break;
           
             default:          

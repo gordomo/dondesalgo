@@ -45,7 +45,7 @@
 
       }
 
-       public function setBoliches($nombre,$direccion,$telefono,$email,$clave,$idcodigo)
+      public function setBoliches($nombre,$direccion,$telefono,$email,$clave,$idcodigo)
       {
 
          $consulta="INSERT INTO usuarios (tipo, email, clave, idcodigo, nombre, direccion, telefono, estado) VALUES (2, ?, ?, ?, ?, ?, ?, 1)";
@@ -175,7 +175,7 @@
 
       public function getDatosUsuario()
       {
-
+          
          $idusuario = $_SESSION["id"];
 
          $consulta="SELECT tipo, nombre, direccion, fotoperfil FROM usuarios WHERE idusuarios = $idusuario";
@@ -200,9 +200,32 @@
          return $datosUsuario;
 
       }
+      
+      public function getTipoUsuario($idUsuario)
+      {
+          $consulta="SELECT tipo FROM usuarios WHERE idusuarios = $idUsuario";
 
+          $resultado = $this->conexion_db->query($consulta);
 
-   }
+          if(!$resultado)
+          {
+
+            $contenido="Fallo al ejecutarse la consulta getDatosUsuario:  (" . $this->conexion_db->errno . ")" . $this->conexion_db->error.".";
+
+            $log = new logs();
+
+            $log->setLog($contenido);
+
+            return $this->mje_error;
+
+          }
+
+          $tipoUsuario = $resultado->fetch_array(MYSQLI_ASSOC);
+
+          return $tipoUsuario;          
+      }
+      
+    }
 
 
 

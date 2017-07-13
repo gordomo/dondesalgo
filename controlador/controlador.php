@@ -342,7 +342,6 @@
          }     
 
       break;
-
       case (isset($_POST['crear_perfil'])):
       
           require_once('modelo/imagen.php');
@@ -399,7 +398,207 @@
           }      
 
       break;
+      case (isset($_REQUEST['editar_evento'])):
+         
+         require_once('modelo/imagen.php');
+         require_once('modelo/validar.php');
+         require_once('modelo/evento.php');
+         require_once('modelo/usuarios.php');
+         
+         $imagen = new imagen();
+         $usuario = new usuarios();
+         
+        //se validan los datos ingresados
+         $titulo = $_POST['titulo_evento'];
+         $fecha = $_POST['fecha_evento']; 
+         $hora_inicio = $_POST['hora_inicio'];
+         $hora_fin = $_POST['hora_fin'];
+         $descripcion = $_POST['descripcion_evento'];
+         $descripcion = str_replace(array("\r\n","\r","\n","\\r","\\n","\\r\\n"),"<br/>",$descripcion);
+         $id_evento = $_POST['idevento'];
+         $direccion = $_POST['direccion'];
+         $tipo = 'no';
+         
+         if(isset($_POST['tipo_evento']))
+         {
+            $tipo = $_POST['tipo_evento']; 
+         } 
 
+         $validar= new validacion();
+         //Devuelve la cantidad de errores en la validacion de campos
+         $errores=$validar->validarEvento($titulo, $fecha, $hora_inicio, $hora_fin, $descripcion, $direccion, $tipo);
+         
+         if($errores == 0)
+         {
+            $conexion= new conexion();
+            $conexion_db=$conexion->conexion();
+
+            $titulo=$conexion_db->real_escape_string($titulo);
+            $fecha=$conexion_db->real_escape_string($fecha);
+            $fecha=date("Y-m-d",strtotime($fecha));
+            $hora_inicio=$conexion_db->real_escape_string($hora_inicio);
+            $hora_fin=$conexion_db->real_escape_string($hora_fin);
+            $descripcion= $conexion_db->real_escape_string($descripcion);
+
+            if(isset($_POST['direccion']) && isset($_POST['tipo_evento']))
+            {
+              $direccion= $conexion_db->real_escape_string($direccion);
+              $tipo= $conexion_db->real_escape_string($tipo);
+              
+            }  
+
+            $nombrePortada = $_FILES['imagen_evento']['name'];
+            $tipoPortada   = $_FILES['imagen_evento']['type'];
+            $sizePortada   = $_FILES['imagen_evento']['size'];
+            $tempPortada   = $_FILES['imagen_evento']['tmp_name'];
+
+            $datosUsuario = $usuario->getDatosUsuario(); 
+
+            if($datosUsuario == 99)
+            {
+                $mensaje_error_interno="activado";
+            }
+            else
+            {
+                $rutaUsuario = $imagen->crearCarpetas($datosUsuario['tipo']);
+
+                $resulSubida = $imagen->subirPortada($nombrePortada, $tipoPortada, $sizePortada, $tempPortada, $rutaUsuario);
+
+                switch ($resulSubida) 
+                {
+                    case 1:
+                       $mensaje_error_formato="activado";
+                       break;
+
+                    case 2:
+                       $mensaje_error_grande="activado";
+                    break;   
+                    
+                    default:
+                        
+                        $evento = new evento();
+                                
+                        $resulEvento = $evento->updateEvento($titulo, $fecha, $hora_inicio, $hora_fin, $descripcion, $resulSubida, $direccion, $tipo, $id_evento, $datosUsuario);
+
+                        if($resulEvento == 99)
+                        {
+                           $mensaje_error_interno="activado";
+                        }
+                        else
+                        {
+                            $mensaje_exito="activado";
+
+                            $acceso_boliches="si";
+
+                            $eventos_boliches= new evento();
+                            
+                            $resulEventos= $eventos_boliches->getEventos();
+
+                        }
+                            
+                     break;
+                }
+
+            }    
+
+         }
+         else
+         {
+              //Devuelve los mensajes de error
+              $mensaje=$validar->getMensaje();
+         } 
+
+
+      break;
+      case (isset($_POST['accion'])):
+          
+          $accion = $_POST['accion'];
+          require_once('modelo/evento.php');
+          require_once('modelo/usuarios.php');
+          
+          if($accion == 'editar')
+          {
+              $band = 'editar';
+              
+              //Se busca el evento a editar a traves del id del evento
+              $evento = new evento();
+              $resulEvento = $evento->getEvento($_POST['idevento']);
+              $evento = $resulEvento->fetch_array(MYSQLI_ASSOC);
+              
+              $usuario = new usuarios();
+              $tipoUsuario = $usuario->getTipoUsuario($evento['idusuarios']);
+              
+              //Convierte el los <br/> en saltos de linea para que se pueda ver tal cual estaba escrito
+              $descripcion= $evento['descripcion']; 
+              $descripcion = str_replace("<br/>", "\r\n", $descripcion);
+              
+              //Convierte la fecha del formato dd/mm/aaaa al formato dd.mm.aaaa
+              $fecha_inicio = explode("/", $evento['fecha_inicio']);
+              $fecha_inicio = $fecha_inicio[0].".".$fecha_inicio[1].".".$fecha_inicio[2];
+              
+              
+              
+          }
+          elseif($accion == 'eliminar') //Comprueba que la accion tomada por el adminsitrador sea la de eliminar
+          {
+             $band = 'eliminar';
+             
+             $evento = new evento();
+             $idEvento = $_POST['idevento'];
+             $resulEliminar = $evento->deleteEvento($idEvento);
+             
+             if($resulEliminar == 99)
+                        {
+                           $mensaje_error_interno="activado";
+                        }
+                        else
+                        {
+                            $mensaje_exito="activado";
+
+                            $acceso_boliches="si";
+                            
+                            $eliminarAdm = 'si';
+                            
+                            $eventos_boliches= new evento();
+                            
+                            $resulEventos= $eventos_boliches->getEventos();
+                            
+                            
+
+                        }
+             
+          }
+          elseif($accion == 'republicar') //Comprueba que la accion tomada por el adminsitrador sea republicar
+          {
+                require_once('modelo/evento.php');
+                require_once('modelo/usuarios.php');
+                $band = 'eliminar';
+
+                $evento = new evento();
+                $idEvento = $_POST['idevento'];
+                $resulEliminar = $evento->republicarEvento($idEvento);
+
+                if($resulEliminar == 99)
+                           {
+                              $mensaje_error_interno="activado";
+                           }
+                           else
+                           {
+                               $mensaje_exito="activado";
+
+                               $acceso_boliches="si";
+
+                               $republicarAdm = 'si';
+
+                               $eventos_boliches= new evento();
+
+                               $resulEventos= $eventos_boliches->getEventos();
+
+
+
+                           }
+          }
+      break; 
       case (isset($_REQUEST['crear_evento'])):
       
          require_once('modelo/imagen.php');
@@ -413,7 +612,7 @@
          
          // se agrega la foto de perfil si no tiene 
          if(isset($_FILES['perfil']))
-         { 
+         {
            
               $nombrePerfil = $_FILES['perfil']['name'];
               $tipoPerfil   = $_FILES['perfil']['type'];
@@ -421,7 +620,7 @@
               $tempPerfil   = $_FILES['perfil']['tmp_name']; 
 
               $datosUsuario = $usuario->getDatosUsuario();
-
+                            
               if($datosUsuario == 99)
               {
                   $mensaje_error_interno="activado";
@@ -462,14 +661,14 @@
          }
 
          //se validan los datos ingresados
-         $titulo= $_POST['titulo_evento'];
-         $fecha= $_POST['fecha_evento']; 
-         $hora_inicio= $_POST['hora_inicio'];
-         $hora_fin= $_POST['hora_fin'];
-         $descripcion= $_POST['descripcion_evento'];
+         $titulo = $_POST['titulo_evento'];
+         $fecha = $_POST['fecha_evento']; 
+         $hora_inicio = $_POST['hora_inicio'];
+         $hora_fin = $_POST['hora_fin'];
+         $descripcion = $_POST['descripcion_evento'];
          $descripcion = str_replace(array("\r\n","\r","\n","\\r","\\n","\\r\\n"),"<br/>",$descripcion);
-         $direccion ='no';
-         $tipo ='no';
+         $direccion = 'no';
+         $tipo = 'no';
 
          if(isset($_POST['direccion']) && isset($_POST['tipo_evento']))
          {
@@ -565,7 +764,7 @@
 
 
       break;
-      case(isset($_POST['enviar_voto'])):
+      case (isset($_POST['enviar_voto'])):
 
           require_once('modelo/voto.php');
 
@@ -598,7 +797,7 @@
           $resulEventos= $eventos->getEventos();
 
       break;
-      case(isset($_GET['cerrar_seccion'])):
+      case (isset($_GET['cerrar_seccion'])):
 
           session_destroy();
           header("Location: index.php");
@@ -628,15 +827,13 @@
           if(isset($_POST['filtro']))
           {
 
-             $resulEventos= $eventos->getEventosConFiltro();
+             $resulEventos = $eventos->getEventosConFiltro();
 
-
-            
           }
           else
           {
 
-             $resulEventos= $eventos->getEventos();
+             $resulEventos = $eventos->getEventos();
 
           }  
           
@@ -644,10 +841,6 @@
 
    }
 
-
-
-   require_once("vista/inicio.php");
-
-
+require_once("vista/inicio.php");
 
 ?>
