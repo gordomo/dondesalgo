@@ -97,7 +97,7 @@
 
           $fechas=array();
 
-          for($i=0; $i <= 6; $i++)
+          for($i=0; $i <= 7; $i++)
           {
             $dia_siguiente = date('Y-m-d', strtotime("+".$i. " day"));
 
@@ -110,7 +110,7 @@
           $consulta="SELECT ideventos, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
                             DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento 
                       FROM eventos 
-                      WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$fechas[6]'
+                      WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$fechas[7]'
                       ORDER BY fechainicio ASC;"; 
 
 
@@ -303,6 +303,7 @@
 
        
       }
+      
 
   }      
 
