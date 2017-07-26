@@ -24,7 +24,8 @@
       {
 
           $carpetaUsuario = $_SERVER['DOCUMENT_ROOT'].'/sistema_boliche/upload/'. $tipoUsuario .'/'.$this->iduser;
-
+          
+          //Verifica si existe la carpeta del usuario, en caso de que no las crea
           if(!is_dir($carpetaUsuario))
           {
 
@@ -61,10 +62,8 @@
 
                         while (false !== ($archivo = readdir($directorio))) //obtenemos un archivo y luego otro sucesivamente
                         {
-                          $ruta = $rutaUsuario . '/Foto Perfil/' . $archivo;
-                          
-                          chmod($ruta, 0777); 
-                          unlink($ruta);
+                           
+                           unlink($rutaUsuario . '/Foto Perfil/' . $archivo);
 
                         }
 
@@ -247,8 +246,7 @@
               }
 
       }
-
-
+      
   }
 
 
