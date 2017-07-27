@@ -305,9 +305,17 @@
           
          $envio_mail= new mails();
          
-         $envio_mail->enviar_contacto($nombre,$apellido,$telefono,$email,$comentario);
-
-         $msje_exito_contacto='activado';  
+         $resEnvio = $envio_mail->enviar_contacto($nombre,$apellido,$telefono,$email,$comentario);
+         
+         if($resEnvio == 1)
+         {
+              $msje_exito_contacto='activado';
+         }
+         else
+         {
+             
+              $msje_error_contacto = 'activado';
+         }    
         
 
       break;
@@ -766,36 +774,51 @@
       break;
       case (isset($_POST['enviar_voto'])):
 
-          require_once('modelo/voto.php');
+            require_once('modelo/voto.php');
+            require_once('modelo/evento.php');
 
-          $idevento=$_POST['id_evento'];
-          $fecha_inicio=$_POST['fecha_inicio'];
-          $fecha_inicio = explode('/',$fecha_inicio);
-          $fecha_inicio = $fecha_inicio[2]."-".$fecha_inicio[1]."-".$fecha_inicio[0];
-          $hora_inicio=$_POST['hora_inicio'];
+            $ocultar_mensaje=$_POST['mensaje_oculto_form'];
+            
+            if($ocultar_mensaje == 1)
+            {               
+                setcookie("no_mensaje", $ocultar_mensaje ,time()+86400);
 
-          $fechaYhora= $fecha_inicio. " " . $hora_inicio;
+                $no_mensaje="1";                     
+            }
+            
 
-          $voto= new voto();
+            $evento= new evento();
 
-          $voto->setVotoUsuario($idevento,$fechaYhora);
+            $idevento=$_POST['id_evento'];
+          
+            $fecha_inicio=$_POST['fecha_inicio'];
+            
+            $fecha_inicio = explode('/',$fecha_inicio);
+            
+            $fecha_inicio = $fecha_inicio[2].'-'.$fecha_inicio[1].'-'.$fecha_inicio[0];
+            
+            $hora_inicio= $_POST['hora_inicio'];
 
-          $voto->setVotoEvento($idevento);
+            $fechaYhora= $fecha_inicio. " " . $hora_inicio;
+            
 
-          switch (true) 
-          {
-            case (isset($_POST['enviar_voto'])):
-              $acceso_boliches="si";
-            break;
+            $voto= new voto();
 
-          }
+            $voto->setVotoUsuario($idevento,$fechaYhora);
 
-          require_once('modelo/evento.php');
+            $voto->setVotoEvento($idevento);
 
-          $eventos= new evento();
+            switch (true) 
+            {
+              case (isset($_POST['enviar_voto'])):
+                $acceso_boliches="si";
+              break;
 
-          $resulEventos= $eventos->getEventos();
+            }
 
+            $resulEventos= $evento->getEventos();
+                         
+          
       break;
       case (isset($_GET['cerrar_seccion'])):
 

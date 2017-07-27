@@ -93,6 +93,7 @@ footer
   color: #8b4cc7;
   font-size: 30px !important;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .fa-hand-o-right:hover

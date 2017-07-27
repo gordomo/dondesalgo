@@ -188,7 +188,7 @@
 
                     </div>
 <?php
-        if(isset($_SESSION['organizador']) || isset($_SESSION['admin']))
+        if(isset($_SESSION['organizador']) || $tipoUsuario == 3)
         {    
 ?>                    
 

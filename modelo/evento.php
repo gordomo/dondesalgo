@@ -97,7 +97,7 @@
 
           $fechas=array();
 
-          for($i=0; $i <= 6; $i++)
+          for($i=0; $i <= 7; $i++)
           {
             $dia_siguiente = date('Y-m-d', strtotime("+".$i. " day"));
 
@@ -112,7 +112,9 @@
           $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
                             DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado
                       FROM eventos 
+
                       WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$fechas[6]' AND estado = $estado
+
                       ORDER BY fechainicio ASC;"; 
 
 
@@ -182,7 +184,7 @@
 
                       //pregunta si hay eventos en cualquier momento
                       $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
-                                        DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento 
+                                        DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado 
                                   FROM eventos 
                                   WHERE tipo = $tipo AND fechainicio >= $fechas[0] AND estado = $estado
                                   ORDER BY fechainicio ASC;"; 
@@ -334,7 +336,7 @@
 
        
       }
-      
+
       
       public function updateEvento($nombreevento, $fechainicio, $horainicio, $horafin, $descripcion, $fotoevento, $direccion, $tipo, $id_evento, $datosUsuario)
       { 
@@ -368,6 +370,7 @@
             return $this->mje_error;
 
           }
+
 
           $sentencia->close();
 
