@@ -460,7 +460,6 @@ switch (true) {
     break;
 
     case (isset($eliminarAdm)):
-     die('asd');
 ?>                 
      boliches();
 <?php                     

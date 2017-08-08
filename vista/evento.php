@@ -100,6 +100,7 @@
                                         
                                         if(isset($_SESSION['admin']))
                                         {
+                                            //Modificar apra sacar el switch
                                             //Asigna condiciones para que cuando se edite el evento, pueda aparecer la opcion selecionada correctamente
                                             switch($evento['tipo']):
                                             case 2:
@@ -217,10 +218,10 @@
 
                         <div  class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
                         <div  class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4 sin-padding">   
-                            <label for="imagen_evento" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" id="div_portada" align="center" data-container="body" data-toggle="tooltip" data-placement="right" title="Agrega una foto de portada del evento aqui.">
-                                      <span class="glyphicon glyphicon-plus" aria-hidden="true" id="icono_portada" ></span>
-                                      <input type="file" id="imagen_evento" name="imagen_evento" style="display:none;">
-                            </label>
+                            <!--<label for="imagen_evento" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" id="div_portada" align="center" data-container="body" data-toggle="tooltip" data-placement="right" title="Agrega una foto de portada del evento aqui.">
+                                      <span class="glyphicon glyphicon-plus" aria-hidden="true" id="icono_portada" ></span>-->
+                                      <input type="file" id="imagen_evento" name="imagen_evento" value="sarsa.exe">
+                            <!--</label>-->
                             <label for="imagen_evento" id="imagen_evento-error"  class="error" style="display: none;"></label>
                         </div>
                         <div  class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
