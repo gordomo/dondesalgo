@@ -1,8 +1,35 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="espacio_nav" style="display: none;"></div>
     <nav class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" id="nav_principal" align="center">
          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+             
+             <?php
+                if(isset($_SESSION['id']))
+                {
+                            
+                    //SI EL RESULTADO NO ES NULL o SI ESTA DECLARADA
+                    if(isset($resulGanador))
+                    {
+                        if($resulGanador == 99)
+                        {
+                           $mensaje_error_interno="activado";         
+                        }
+                        else
+                        {
+                            echo "Evento ganador del dia: ".$resulGanador["nombreevento"]. " en ".$resulGanador["nombre"]. " con ".$resulGanador["cantidad_voto"]." votos";  
+     
+                        }    
 
-           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" style="float: left; font-size: 20px; margin-right: 0px;">
+                    }
+                    else
+                    {
+                       echo "No hay ganadores";  
+                        
+                    }    
+
+                }  
+             ?>
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" style="float: left; font-size: 20px; margin-right: 0px;">
                    <span class="glyphicon glyphicon-menu-hamburger"></span>
             </button>
 

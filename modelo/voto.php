@@ -51,7 +51,7 @@
 
       public function setVotoEvento($idevento)
       {
-
+          
 
          $consulta="SELECT id_votacion_evento FROM votacion_evento WHERE id_evento = ?";
 
@@ -83,12 +83,13 @@
 
          if($id_voto_evento == null)
          {
-
-            $consulta="INSERT INTO votacion_evento (id_evento, cantidad_voto) VALUES (?, 1)";
+                      
+            $consulta="INSERT INTO votacion_evento (cantidad_voto, id_evento) VALUES (1 ,?)";
 
             $sentencia = $this->conexion_db->prepare($consulta);
 
             $sentencia->bind_param("i", $idevento);
+            
 
             if(!$sentencia->execute())
             {
@@ -148,7 +149,6 @@
          $fecha_inicio = $fecha_inicio[2]."-".$fecha_inicio[1]."-".$fecha_inicio[0];
 
          $hora_evento=strtotime($hora_inicio);
-
          $hora_nuevo_dia=strtotime('00:00');
          $hora_nuevo_dia_hasta=strtotime('03:00');
 
