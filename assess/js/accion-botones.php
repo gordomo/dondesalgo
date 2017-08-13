@@ -563,7 +563,33 @@ switch (true) {
 <?php       } 
 ?>
         });
+        
+<?php
+        if (isset($_SESSION['id'])) 
+        {
+             
+?>        
+            $( ".glyphicon-envelope" ).click(function() 
+            {
+                    $( "#evento_ganador" ).toggle("slow");
 
+                    $(".glyphicon-envelope").toggleClass("activar");
+            });
+            
+<?php            
+            if(isset($resulGanador))
+            {
+?>                
+                setInterval(function()
+                {   $('.glyphicon-envelope').toggleClass('activar');
+                    $('#numero_ganador').fadeIn(1000).delay(1000).fadeOut(1500).delay(500);
+                }, 2000);
+<?php             
+            }            
+  
+            
+        }    
+?>
 
     /*
      
