@@ -104,13 +104,17 @@
             $fechas[] = $dia_siguiente;
 
           } 
-
+          
+          //estado de evento activo
+          $estado = 1;
 
           //pregunta si hay eventos en la semana
-          $consulta="SELECT ideventos, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
-                            DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento 
+          $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
+                            DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado
                       FROM eventos 
-                      WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$fechas[7]'
+
+                      WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$fechas[6]' AND estado = $estado
+
                       ORDER BY fechainicio ASC;"; 
 
 
@@ -145,10 +149,10 @@
                 $en_mes= date('Y-m-d', strtotime("+31 day"));
 
                //pregunta si hay eventos en el mes
-                $consulta="SELECT ideventos, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
-                                  DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento 
+                $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
+                                  DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin, fotoperfil, fotoevento, estado
                             FROM eventos 
-                            WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$en_mes'
+                            WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$en_mes' AND estado = $estado
                             ORDER BY fechainicio ASC;"; 
 
                 $resultado = $this->conexion_db->query($consulta);
@@ -179,10 +183,12 @@
                 {
 
                       //pregunta si hay eventos en cualquier momento
-                      $consulta="SELECT ideventos, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
-                                        DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento 
+                      $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
+                                        DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado 
                                   FROM eventos 
-                                  WHERE tipo = $tipo AND fechainicio >= '$fechas[0]'
+
+                                  WHERE tipo = $tipo AND fechainicio >= $fechas[0] AND estado = $estado
+
                                   ORDER BY fechainicio ASC;"; 
 
                       $resultado = $this->conexion_db->query($consulta);
@@ -209,8 +215,35 @@
           }
 
       }
+      
+      public function getEvento($id_evento)
+      {
+          $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
+                            DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento
+                      FROM eventos 
+                      WHERE ideventos = $id_evento ";
+          
+                      $resultado = $this->conexion_db->query($consulta);
 
-       public function getEventosConFiltro()
+                      if(!$resultado)
+                      {
+
+                        $contenido="Fallo al ejecutarse la consulta getEventos en cualquier momento:  (" . $this->conexion_db->errno . ")" . $this->conexion_db->error.".";
+
+                        $log = new logs();
+
+                        $log->setLog($contenido);
+
+                        return $this->mje_error;
+
+                      }
+
+                      $this->conexion_db->close();
+
+                      return $resultado;
+      }
+
+      public function getEventosConFiltro()
       { 
 
           switch (true) 
@@ -230,6 +263,8 @@
 
 
           $hoy= date('Y-m-d');
+          //Estado del evento, activo = 1. Se usa en la sentencia SQL
+          $estado = 1;
 
           switch (true) 
           {
@@ -239,10 +274,10 @@
                      $en_semana= date('Y-m-d', strtotime("+7 day"));
 
                     //pregunta si hay eventos en la semana
-                    $consulta="SELECT ideventos, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
-                                      DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento 
+                    $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
+                                      DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado 
                                 FROM eventos 
-                                WHERE tipo = $tipo AND fechainicio BETWEEN '$hoy' AND '$en_semana'
+                                WHERE tipo = $tipo AND fechainicio BETWEEN '$hoy' AND '$en_semana' AND estado = $estado
                                 ORDER BY fechainicio ASC;"; 
 
                     $filtro_dia="semana";
@@ -254,10 +289,10 @@
                      $en_semana= date('Y-m-d', strtotime("+31 day"));
 
                     //pregunta si hay eventos en la semana
-                    $consulta="SELECT ideventos, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
-                                      DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento 
+                    $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
+                                      DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado 
                                 FROM eventos 
-                                WHERE tipo = $tipo AND fechainicio BETWEEN '$hoy' AND '$en_semana'
+                                WHERE tipo = $tipo AND fechainicio BETWEEN '$hoy' AND '$en_semana' AND estado = $estado
                                 ORDER BY fechainicio ASC;";
 
                     $filtro_dia="mes";             
@@ -268,10 +303,10 @@
 
 
                     //pregunta si hay eventos en cualquier momento
-                    $consulta="SELECT ideventos, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
-                                        DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento 
+                    $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
+                                        DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento,estado 
                                FROM eventos 
-                               WHERE tipo = $tipo AND fechainicio >= '$hoy'
+                               WHERE tipo = $tipo AND fechainicio >= '$hoy' AND estado = $estado
                                ORDER BY fechainicio ASC;";
 
                     $filtro_dia="todos";           
@@ -303,7 +338,78 @@
 
        
       }
+
       
+      public function updateEvento($nombreevento, $fechainicio, $horainicio, $horafin, $descripcion, $fotoevento, $direccion, $tipo, $id_evento, $datosUsuario)
+      { 
+          
+          if($direccion == 'no')
+          {
+            $consulta = " UPDATE eventos SET nombreevento = ?, descripcion = ?, fechainicio = ?, horainicio = ?, horafin = ?, fotoevento = ? WHERE ideventos = ? ";
+            
+            $sentencia = $this->conexion_db->prepare($consulta);
+
+            $sentencia->bind_param("ssssssi", $nombreevento, $descripcion, $fechainicio, $horainicio, $horafin, $fotoevento, $id_evento);
+          }
+          else
+          {
+            $consulta = " UPDATE eventos SET nombreevento = ?, descripcion = ?, fechainicio = ?, horainicio = ?, horafin = ?, fotoevento = ?, direccion = ? WHERE ideventos = ? ";
+
+            $sentencia = $this->conexion_db->prepare($consulta);
+
+            $sentencia->bind_param("sssssssi", $nombreevento, $descripcion, $fechainicio, $horainicio, $horafin, $fotoevento, $direccion, $id_evento);
+          }
+          
+          if(!$sentencia->execute())
+          {
+
+            $contenido="Fallo al ejecutarse la consulta setEvento:  (" . $sentencia->errno . ")" . $sentencia->error.".";
+
+            $log = new logs();
+
+            $log->setLog($contenido);
+
+            return $this->mje_error;
+
+          }
+
+
+          $sentencia->close();
+
+          $this->conexion_db->close();
+
+          return 1; 
+      }
+      
+      public function deleteEvento($idEvento)
+      { 
+          $estado = 0;
+          
+          $consulta = " UPDATE eventos SET estado = ? WHERE ideventos = ? ";
+
+          $sentencia = $this->conexion_db->prepare($consulta);
+
+          $sentencia->bind_param("ii", $estado, $idEvento);
+
+          if(!$sentencia->execute())
+          {
+
+            $contenido="Fallo al ejecutarse la consulta setEvento:  (" . $sentencia->errno . ")" . $sentencia->error.".";
+
+            $log = new logs();
+
+            $log->setLog($contenido);
+
+            return $this->mje_error;
+
+          }
+
+          $sentencia->close();
+
+          $this->conexion_db->close();
+
+          return 1; 
+      }
       
       public function getEventoGanador($tipo)
       {
@@ -350,6 +456,37 @@
           {
              
             $contenido="Fallo al ejecutarse la consulta getEventoGanador:  (" . $this->conexion_db->errno . ")" . $this->conexion_db->error.".";
+            $log = new logs();
+
+            $log->setLog($contenido);
+
+            return $this->mje_error;
+
+          }
+
+       
+          $fila_ganador = $resultado->fetch_array(MYSQLI_ASSOC);
+                
+          return $fila_ganador;
+                  
+          
+      }
+
+
+      public function republicarEvento($idEvento)
+      { 
+          $estado = 1;
+          
+          $consulta = " UPDATE eventos SET estado = ? WHERE ideventos = ? ";
+
+          $sentencia = $this->conexion_db->prepare($consulta);
+
+          $sentencia->bind_param("ii", $estado, $idEvento);
+
+          if(!$sentencia->execute())
+          {
+
+            $contenido="Fallo al ejecutarse la consulta setEvento:  (" . $sentencia->errno . ")" . $sentencia->error.".";
 
             $log = new logs();
 
@@ -358,17 +495,14 @@
             return $this->mje_error;
 
           }
-          
-           
-          
-          $fila_ganador = $resultado->fetch_array(MYSQLI_ASSOC);
-                
-          return $fila_ganador;
-                  
-          
-      } 
-      
 
+          $sentencia->close();
+
+          $this->conexion_db->close();
+
+          return 1; 
+      }
+      
   }      
 
 
