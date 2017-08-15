@@ -100,26 +100,14 @@
                                         
                                         if(isset($_SESSION['admin']))
                                         {
-                                            //Modificar apra sacar el switch
-                                            //Asigna condiciones para que cuando se edite el evento, pueda aparecer la opcion selecionada correctamente
-                                            switch($evento['tipo']):
-                                            case 2:
-                                                $cond = 2;
-                                            break;
-                                            case 4:
-                                                $cond = 4;
-                                            break;
-                                            case 5                     :
-                                                $cond = 5;
-                                            break;
-                                            endswitch;
+                                            
                                         }
                                         
                         ?>
                                         <option value='' >Ninguno</option>
-                                        <option value='2' <?php if($cond == 2): ?> selected <?php endif; ?> >Cachengue</option>
-                                        <option value='4' <?php if($cond == 4): ?> selected <?php endif; ?> >Previa</option>
-                                        <option value='5' <?php if($cond == 5): ?> selected <?php endif; ?> >Electronica</option>
+                                        <option value='2' <?php if(isset($evento['tipo']) == 2): ?> selected <?php endif; ?> >Cachengue</option>
+                                        <option value='4' <?php if(isset($evento['tipo']) == 4): ?> selected <?php endif; ?> >Previa</option>
+                                        <option value='5' <?php if(isset($evento['tipo']) == 5): ?> selected <?php endif; ?> >Electronica</option>
                                       </select>
                                 </div>
                             </div>   
@@ -211,18 +199,38 @@
 
                     </div>
 <?php
-        }     
+        }
+        elseif($tipoUsuario == 2)
+        {
+?>
+            <input type="hidden" name="direccion" value="<?= $evento['direccion']; ?> ">
+<?php
+        }
 ?>                    
 
                     <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" style="margin-bottom: 35px;">
 
                         <div  class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
-                        <div  class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4 sin-padding">   
-                            <!--<label for="imagen_evento" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" id="div_portada" align="center" data-container="body" data-toggle="tooltip" data-placement="right" title="Agrega una foto de portada del evento aqui.">
-                                      <span class="glyphicon glyphicon-plus" aria-hidden="true" id="icono_portada" ></span>-->
-                                      <input type="file" id="imagen_evento" name="imagen_evento" value="sarsa.exe">
-                            <!--</label>-->
+                        <div  id="div_foto_evento" class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4 sin-padding">   
+                            
+<?php
+                            if(isset($_SESSION['admin']))
+                            {
+?>
+                            <img src="<?= 'upload'. $evento['fotoevento'] ?>" id="foto_evento" width="250px" style="cursor: pointer;" data-container="body" data-toggle="tooltip" data-placement="right" title="Cambiar imagen del evento">
+<?php
+                            }
+                            else
+                            {
+?>
+                            <label for="imagen_evento" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" id="div_portada" align="center" data-container="body" data-toggle="tooltip" data-placement="right" title="Agrega una foto de portada del evento aqui.">
+                                      <span class="glyphicon glyphicon-plus" aria-hidden="true" id="icono_portada" ></span>
+                                      <input type="file" id="imagen_evento" name="imagen_evento" style="display: none;">
+                            </label>
                             <label for="imagen_evento" id="imagen_evento-error"  class="error" style="display: none;"></label>
+<?php
+                            }
+?> 
                         </div>
                         <div  class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
 
@@ -257,6 +265,8 @@
                     if(isset($_SESSION['admin']))
                     {
 ?>                      <input type="hidden" name="idevento" value="<?= $evento['ideventos']; ?> ">
+                        <input type="hidden" name="foto_portada" value="<?= $evento['fotoevento']; ?> ">
+                            
                         <button class="btn btn-primary" id="editar_evento" name="editar_evento" value="Submit">Editar evento</button>
 <?php                          
                     }

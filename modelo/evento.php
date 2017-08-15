@@ -76,7 +76,7 @@
 
       }
 
-      public function getEventos()
+      public function getEventos($todos = false)
       { 
 
           switch (true) 
@@ -104,20 +104,19 @@
             $fechas[] = $dia_siguiente;
 
           } 
-          
-          //estado de evento activo
-          $estado = 1;
 
           //pregunta si hay eventos en la semana
           $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
                             DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado
                       FROM eventos 
 
-                      WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$fechas[6]' AND estado = $estado
-
-                      ORDER BY fechainicio ASC;"; 
-
-
+                      WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$fechas[7]' ";
+          if(!$todos){
+              $consulta .= "AND estado <> 0 "; 
+          }
+          
+          $consulta .= "ORDER BY fechainicio ASC;";
+               
           $resultado = $this->conexion_db->query($consulta);
 
           if(!$resultado)
@@ -145,15 +144,22 @@
           }
           else
           {
-
+                
+          
+          
                 $en_mes= date('Y-m-d', strtotime("+31 day"));
 
                //pregunta si hay eventos en el mes
                 $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
                                   DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin, fotoperfil, fotoevento, estado
                             FROM eventos 
-                            WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$en_mes' AND estado = $estado
-                            ORDER BY fechainicio ASC;"; 
+                            WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$en_mes' ";
+                
+                if(!$todos){
+              $consulta .= "AND estado <> 0 "; 
+          }
+          
+          $consulta .= "ORDER BY fechainicio ASC;";
 
                 $resultado = $this->conexion_db->query($consulta);
 
@@ -186,11 +192,16 @@
                       $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
                                         DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado 
                                   FROM eventos 
-                                  WHERE tipo = $tipo AND fechainicio >= $fechas[0] AND estado = $estado
-                                  ORDER BY fechainicio ASC;"; 
+                                  WHERE tipo = $tipo AND fechainicio >= '$fechas[0]' ";
+                      
+                      if(!$todos){
+                         $consulta .= "AND estado <> 0 "; 
+                      }
+
+                        $consulta .= "ORDER BY fechainicio ASC;";
 
                       $resultado = $this->conexion_db->query($consulta);
-
+            
                       if(!$resultado)
                       {
 
@@ -217,7 +228,7 @@
       public function getEvento($id_evento)
       {
           $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
-                            DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento
+                            DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin, fotoperfil, fotoevento
                       FROM eventos 
                       WHERE ideventos = $id_evento ";
           
@@ -275,7 +286,7 @@
                     $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
                                       DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado 
                                 FROM eventos 
-                                WHERE tipo = $tipo AND fechainicio BETWEEN '$hoy' AND '$en_semana' AND estado = $estado
+                                WHERE tipo = $tipo AND estado = $estado AND fechainicio BETWEEN '$hoy' AND '$en_semana' 
                                 ORDER BY fechainicio ASC;"; 
 
                     $filtro_dia="semana";
@@ -290,7 +301,7 @@
                     $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
                                       DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado 
                                 FROM eventos 
-                                WHERE tipo = $tipo AND fechainicio BETWEEN '$hoy' AND '$en_semana' AND estado = $estado
+                                WHERE tipo = $tipo AND estado = $estado AND fechainicio BETWEEN '$hoy' AND '$en_semana'
                                 ORDER BY fechainicio ASC;";
 
                     $filtro_dia="mes";             
@@ -337,7 +348,6 @@
        
       }
 
-      
       public function updateEvento($nombreevento, $fechainicio, $horainicio, $horafin, $descripcion, $fotoevento, $direccion, $tipo, $id_evento, $datosUsuario)
       { 
           
