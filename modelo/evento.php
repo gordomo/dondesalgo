@@ -200,7 +200,7 @@
                       }
 
 
-                        $consulta .= "ORDER BY fechainicio ASC;";
+                        $consulta .= "ORDER BY fechainicio ASC;"; 
 
                       $resultado = $this->conexion_db->query($consulta);
             
