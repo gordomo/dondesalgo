@@ -340,52 +340,7 @@
       }
 
       
-<<<<<<< HEAD
-      
-      public function getEventoGanador($tipo)
-      {
-          $hoy = date("Y-m-d");
-          
-          $mañana= new DateTime($hoy);
-          $mañana->modify('+1 day');
-          $mañana = $mañana->format('Y-m-d');
-          
-          $fecha1=  $hoy ." ". "21:00";
-          $fecha2=  $mañana ." ". "03:00";
-               
-          $consulta="SELECT e.nombreevento, e.nombre, v.cantidad_voto 
-                     FROM votacion_evento v 
-                     INNER JOIN eventos e ON e.ideventos = v.id_evento 
-                     WHERE e.tipo=$tipo  
-                     AND v.cantidad_voto= (SELECT MAX(v.cantidad_voto) FROM votacion_evento WHERE CONCAT(e.fechainicio ,' ', e.horainicio) BETWEEN '$fecha1' AND '$fecha2');";
-                 
-          $resultado = $this->conexion_db->query($consulta);
-         
-          
 
-          if(!$resultado)
-          {
-             
-            $contenido="Fallo al ejecutarse la consulta getEventoGanador:  (" . $this->conexion_db->errno . ")" . $this->conexion_db->error.".";
-
-            $log = new logs();
-
-            $log->setLog($contenido);
-
-            return $this->mje_error;
-
-          }
-          
-           
-          
-          $fila_ganador = $resultado->fetch_array(MYSQLI_ASSOC);
-                
-          return $fila_ganador;
-                  
-          
-      } 
-      
-=======
       public function updateEvento($nombreevento, $fechainicio, $horainicio, $horafin, $descripcion, $fotoevento, $direccion, $tipo, $id_evento, $datosUsuario)
       { 
           
@@ -394,7 +349,7 @@
             $consulta = " UPDATE eventos SET nombreevento = ?, descripcion = ?, fechainicio = ?, horainicio = ?, horafin = ?, fotoevento = ? WHERE ideventos = ? ";
             
             $sentencia = $this->conexion_db->prepare($consulta);
->>>>>>> dev
+
 
             $sentencia->bind_param("ssssssi", $nombreevento, $descripcion, $fechainicio, $horainicio, $horafin, $fotoevento, $id_evento);
           }
