@@ -186,7 +186,9 @@
                       $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
                                         DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado 
                                   FROM eventos 
+
                                   WHERE tipo = $tipo AND fechainicio >= $fechas[0] AND estado = $estado
+
                                   ORDER BY fechainicio ASC;"; 
 
                       $resultado = $this->conexion_db->query($consulta);
@@ -409,6 +411,68 @@
           return 1; 
       }
       
+      public function getEventoGanador($tipo)
+      {
+          $hoy = date("Y-m-d");
+          $hora_hoy  = date("H:i:s");
+          
+          $hora_hoy=strtotime($hora_hoy);
+          $hora_nuevo_dia=strtotime('00:00');
+          $hora_nuevo_dia_hasta=strtotime('03:00');
+
+         if($hora_hoy >= $hora_nuevo_dia && $hora_hoy <=$hora_nuevo_dia_hasta)
+         {
+            $dia_comparar = new DateTime($hoy);
+            $dia_comparar->modify('-1 day');
+            $dia_comparar = $dia_comparar->format('Y-m-d');
+            
+            $fecha1=  $dia_comparar ." ". "21:00";
+            $fecha2=  $hoy ." ". "03:00";
+             
+         }
+         else
+         {
+            $dia_comparar= new DateTime($hoy);
+            $dia_comparar->modify('+1 day');
+            $dia_comparar = $dia_comparar->format('Y-m-d');
+          
+            $fecha1=  $hoy ." ". "21:00";
+            $fecha2=  $dia_comparar ." ". "03:00";      
+             
+         }
+                
+               
+          $consulta="SELECT e.nombreevento, e.nombre, v.cantidad_voto 
+                     FROM votacion_evento v 
+                     INNER JOIN eventos e ON e.ideventos = v.id_evento 
+                     WHERE e.tipo=$tipo  
+                     AND v.cantidad_voto= (SELECT MAX(v.cantidad_voto) FROM votacion_evento WHERE CONCAT(e.fechainicio ,' ', e.horainicio) BETWEEN '$fecha1' AND '$fecha2');";
+                 
+          $resultado = $this->conexion_db->query($consulta);
+         
+          
+
+          if(!$resultado)
+          {
+             
+            $contenido="Fallo al ejecutarse la consulta getEventoGanador:  (" . $this->conexion_db->errno . ")" . $this->conexion_db->error.".";
+            $log = new logs();
+
+            $log->setLog($contenido);
+
+            return $this->mje_error;
+
+          }
+
+       
+          $fila_ganador = $resultado->fetch_array(MYSQLI_ASSOC);
+                
+          return $fila_ganador;
+                  
+          
+      }
+
+
       public function republicarEvento($idEvento)
       { 
           $estado = 1;

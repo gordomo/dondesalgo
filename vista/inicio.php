@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="assess/css/jquery-confirm.min.css">
     <link rel="stylesheet" href="assess/css/jquery.timepicker.css">
     <link rel="stylesheet" href="assess/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assess/css/ToolTip.css">
     <link rel="stylesheet" href="assess/css/estilo.css">
     <script src="assess/js/jquery-latest.js"></script>
     <script src="assess/js/bootstrap.min.js"></script>

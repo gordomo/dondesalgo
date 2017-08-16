@@ -1,8 +1,87 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="espacio_nav" style="display: none;"></div>
     <nav class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" id="nav_principal" align="center">
          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+             
+             <b>
+          <div class="cssToolTip">
+              <b class="glyphicon glyphicon-envelope" aria-hidden="true"  data-container="body" data-toggle="tooltip" data-placement="bottom" title="Eventos ganadores"></b>
+<?php
+                if(isset($_SESSION['id']))
+                {
+                    if(isset($resulGanador))
+                    {
+                      
+                    }
+                } 
+                 echo"<b id='numero_ganador' style='display:none;'>1</b>"; 
+?>                    
+            <span id="evento_ganador">
+              <div class="table-responsive">
+              <table  class="table">
+                <tr>
+                  <td colspan=3 style='font-size:16px;'>
+                    <font color=white>Evento Ganador del Día</font>
+                  </td>               
+                </tr>               
+                <tr  class="tabla_rubro">           
+                  <td  style="padding-top: 20px">         
+                    <b  class="rubro">
+<?php                        
+                    switch (true) 
+                    {
+                      case (isset($_GET['boliche']) || isset($_POST['enviar_filtro_boliche'])):
+                        echo "BOLICHES"; 
+                      break;
+                      case (isset($_GET['previa']) || isset($_POST['enviar_filtro_bar'])):
+                        echo "BARES"; 
+                      break;
+                      default:
+                        echo "BOLICHES"; 
+                      break;
+                    }
+?>          
+                    
+                    </b><br><br>
+                    <p class="texto_evento_ganador">
+<?php
+                if(isset($_SESSION['id']))
+                {
+                    $hora_hoy  = date("H:i:s");
+             
+                    //SI EL RESULTADO NO ES NULL o SI ESTA DECLARADA
+                    if(isset($resulGanador) && (($hora_hoy >= '19:00:00' &&  $hora_hoy<='23:59:59') || ($hora_hoy >= '00:00:00' &&  $hora_hoy<='03:00:00')))
+                    {
+                        if($resulGanador == 99)
+                        {
+                           $mensaje_error_interno="activado";         
+                        }
+                        else
+                        {
+                            echo $resulGanador["cantidad_voto"]." votos: ".$resulGanador["nombreevento"]. " en ".$resulGanador["nombre"];  
+     
+                        }    
 
-           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" style="float: left; font-size: 20px; margin-right: 0px;">
+                    }
+                    else
+                    {
+                       echo "No hay ganadores";  
+                        
+                    }    
+
+                }  
+?>
+                    </p>
+                  </td>             
+                </tr>
+                
+              </table>
+              </div> 
+
+            </span> 
+          </div>
+          </b>
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" style="float: left; font-size: 20px; margin-right: 0px;">
                    <span class="glyphicon glyphicon-menu-hamburger"></span>
             </button>
 
