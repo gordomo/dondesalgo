@@ -50,8 +50,19 @@
                         $eventos_boliches= new evento();
           
                         $resulGanador = $eventos_boliches->getEventoGanador(2);
+
+                        $resulEventos= $eventos_boliches->getEventos(); 
                         
-                        $resulEventos = $eventos_boliches->getEventos(); 
+                     } elseif(isset($_SESSION['admin'])) {
+                        
+                         $acceso_boliches="si";
+
+                        require_once('modelo/evento.php');
+
+                        $eventos_boliches= new evento();
+                        
+                        $resulEventos= $eventos_boliches->getEventos(true); 
+
                      }
                     
                break;
@@ -427,6 +438,7 @@
          $descripcion = str_replace(array("\r\n","\r","\n","\\r","\\n","\\r\\n"),"<br/>",$descripcion);
          $id_evento = $_POST['idevento'];
          $direccion = $_POST['direccion'];
+                  
          $tipo = 'no';
          
          if(isset($_POST['tipo_evento']))
@@ -456,12 +468,7 @@
               $tipo= $conexion_db->real_escape_string($tipo);
               
             }  
-
-            $nombrePortada = $_FILES['imagen_evento']['name'];
-            $tipoPortada   = $_FILES['imagen_evento']['type'];
-            $sizePortada   = $_FILES['imagen_evento']['size'];
-            $tempPortada   = $_FILES['imagen_evento']['tmp_name'];
-
+            
             $datosUsuario = $usuario->getDatosUsuario(); 
 
             if($datosUsuario == 99)
@@ -470,10 +477,24 @@
             }
             else
             {
-                $rutaUsuario = $imagen->crearCarpetas($datosUsuario['tipo']);
+                
+                if(isset($_FILES['imagen_evento']['name']))
+                {
+                    $nombrePortada = $_FILES['imagen_evento']['name'];
+                    $tipoPortada   = $_FILES['imagen_evento']['type'];
+                    $sizePortada   = $_FILES['imagen_evento']['size'];
+                    $tempPortada   = $_FILES['imagen_evento']['tmp_name'];
+                
+                    $rutaUsuario = $imagen->crearCarpetas($datosUsuario['tipo']);
 
-                $resulSubida = $imagen->subirPortada($nombrePortada, $tipoPortada, $sizePortada, $tempPortada, $rutaUsuario);
-
+                    $resulSubida = $imagen->subirPortada($nombrePortada, $tipoPortada, $sizePortada, $tempPortada, $rutaUsuario);
+                }
+                else
+                {
+                    $resulSubida = $_POST['foto_portada'];
+                }
+                
+                
                 switch ($resulSubida) 
                 {
                     case 1:
@@ -558,24 +579,23 @@
              $resulEliminar = $evento->deleteEvento($idEvento);
              
              if($resulEliminar == 99)
-                        {
-                           $mensaje_error_interno="activado";
-                        }
-                        else
-                        {
-                            $mensaje_exito="activado";
+            {
+               $mensaje_error_interno="activado";
+            }
+            else
+            {
+                $mensaje_exito="activado";
 
-                            $acceso_boliches="si";
-                            
-                            $eliminarAdm = 'si';
-                            
-                            $eventos_boliches= new evento();
-                            
-                            $resulEventos= $eventos_boliches->getEventos();
-                            
-                            
+                $acceso_boliches="si";
 
-                        }
+                $eliminarAdm = 'si';
+
+                $eventos_boliches= new evento();
+
+                $resulEventos= $eventos_boliches->getEventos(true);
+            
+                
+            }
              
           }
           elseif($accion == 'republicar') //Comprueba que la accion tomada por el adminsitrador sea republicar
@@ -602,7 +622,7 @@
 
                                $eventos_boliches= new evento();
 
-                               $resulEventos= $eventos_boliches->getEventos();
+                               $resulEventos= $eventos_boliches->getEventos(true);
 
 
 
@@ -861,9 +881,17 @@
           }
           else
           {
-             $resulEventos= $eventos->getEventos();
-          }
 
+             $todos = false;
+             if(isset($_SESSION['admin']))
+             {
+                $todos=true;
+             }
+             
+             $resulEventos = $eventos->getEventos($todos);
+            
+          }  
+          
       break;
 
    }

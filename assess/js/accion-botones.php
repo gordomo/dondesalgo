@@ -460,7 +460,6 @@ switch (true) {
     break;
 
     case (isset($eliminarAdm)):
-     die('asd');
 ?>                 
      boliches();
 <?php                     
@@ -488,6 +487,8 @@ switch (true) {
         }
 
     break;
+
+
 
     default:          
 ?>
@@ -669,7 +670,19 @@ break;
 <?php       } 
 ?>
         });
+
         
+        $('#foto_evento').click(function()
+        {
+            $('#foto_evento').hide();
+            
+            $('#div_foto_evento').append("<label for='imagen_evento' class='col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding' id='div_portada' align='center' data-container='body' data-toggle='tooltip' data-placement='right' title='Agrega una foto de portada del evento aqui.'>\n\
+                                            <span class='glyphicon glyphicon-plus' aria-hidden='true' id='icono_portada' ></span>\n\
+                                            <input type='file' id='imagen_evento' name='imagen_evento' style='display: none;'></label>\n\
+                                            <label for='imagen_evento' id='imagen_evento-error'  class='error' style='display: none;'></label>");
+          
+        });
+
 <?php
         if (isset($_SESSION['id'])) 
         {
@@ -678,6 +691,7 @@ break;
             $( ".glyphicon-envelope" ).click(function() 
             {
                     $( "#evento_ganador" ).toggle("slow");
+
 
                     $(".glyphicon-envelope").toggleClass("activar");
             });

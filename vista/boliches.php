@@ -19,15 +19,15 @@
     {
 
 ?>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 btn-primary">Hay <span class="badge"><?= $resulEventos->num_rows; ?></span> eventos de boliches disponibles. ¿A cual queres ir?.</div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 btn-primary">Hay <span class="badge"><?= (!empty($resulEventos->num_rows)) ? $resulEventos->num_rows : 0; ?></span> eventos de boliches disponibles. ¿A cual queres ir?.</div>
+            
 <?php
 
         while ($fila = $resulEventos->fetch_array(MYSQLI_ASSOC)) 
         {
             if(!isset($_SESSION['admin'])&&($fila['estado'] == 1) || isset($_SESSION['admin']))
             {
-
-?>    
+?>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 well well-lg sin-padding">
                      <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" style="margin-top: 30px;">
                           <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align: right;" ><img src="<?= 'upload'. $fila['fotoperfil'];?>" class="img-circle" alt=""  width="100px" height="100px"></div>
@@ -52,26 +52,32 @@
                         <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3"></div>
                      </div>
                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12  sin-padding">
-                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3"></div>
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+<?php
+                                if($fila['estado'] == 0){
+                                    echo '<p style="color: red;">EVENTO DESHABILITADO</p>';
+                                };
+?>                       
+                        </div>
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 recuadro_descripcion" ><?=$fila['descripcion']; ?></div>
                         <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3"></div>
                      </div>
 <?php
                     if(isset($_SESSION['admin']))
-                    {
+                    { 
 ?>
                         <form method="post" action="<?php echo htmlspecialchars('index.php');?>">
 <?php
                             if($fila['estado'] == 1)
                             {
 ?>
-                                <input type="radio" name="accion" value="eliminar"> Eliminar publicación
+                                <input type="radio" name="accion" value="eliminar"> Deshabilitar publicación
 <?php
                             }
                             else
                             {
 ?>
-                                <input type="radio" name="accion" value="republicar"> Repubicar publicación
+                                <input type="radio" name="accion" value="republicar"> Habilitar publicación
 <?php
                             }
 ?>                           
