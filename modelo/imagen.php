@@ -24,7 +24,8 @@
       {
 
           $carpetaUsuario = $_SERVER['DOCUMENT_ROOT'].'/sistema_boliche/upload/'. $tipoUsuario .'/'.$this->iduser;
-
+          
+          //Verifica si existe la carpeta del usuario, en caso de que no las crea
           if(!is_dir($carpetaUsuario))
           {
 
@@ -245,8 +246,7 @@
               }
 
       }
-
-
+      
   }
 
 

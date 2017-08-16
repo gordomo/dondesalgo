@@ -304,33 +304,114 @@ switch (true) {
 
     case (isset($mensaje_exito)):
 
-        if (isset($_POST['crear_evento'])) {
-            ?>
+                if(isset($_POST['crear_evento']))
+                {
+                    
+?>
                     evento();
 
                     $.confirm({
-                        title: '¡Listo!',
-                        content: 'Has creado el evento con exito.',
-                        type: 'purple',
-                        typeAnimated: true,
-                        buttons: {
-                            OK:
-                                    {
-                                        btnClass: 'btn-purple',
+                            title: '¡Listo!',
+                            content: 'Has creado el evento con exito.',
+                            type: 'purple',
+                            typeAnimated: true,
+                            buttons: {
+                                        OK:  
+                                          {   
+                                              btnClass: 'btn-purple',
 
-                                        action: function ()
-                                        {
-                                            boliches();
-                                        }
+                                               action: function()
+                                              {
+                                                boliches();
+                                              }
 
 
-                                    },
-                        }
-                    });
+                                          },
+                                      }
+                            });
+<?php                        
+                }
+                elseif (isset($_POST['editar_evento'])) 
+                {
+?>                    
+                    boliches();
+                    
+                    $.confirm({
+                            title: '¡Listo!',
+                            content: 'El evento ha sido editado con exito.',
+                            type: 'purple',
+                            typeAnimated: true,
+                            buttons: {
+                                        OK:  
+                                          {   
+                                              btnClass: 'btn-purple',
 
-            <?php
-        } elseif (isset($_POST['crear_perfil'])) {
-            ?>
+                                               action: function()
+                                              {
+                                                boliches();
+                                              }
+
+
+                                          },
+                                      }
+                            });
+<?php                            
+                }
+                elseif (isset($eliminarAdm)) 
+                {
+?>                    
+                    boliches();
+                    
+                    $.confirm({
+                            title: 'Evento eliminado',
+                            content: 'El evento ha sido eliminado con exito.',
+                            type: 'purple',
+                            typeAnimated: true,
+                            buttons: {
+                                        OK:  
+                                          {   
+                                              btnClass: 'btn-purple',
+
+                                               action: function()
+                                              {
+                                                boliches();
+                                              }
+
+
+                                          },
+                                      }
+                            });
+<?php                    
+                }
+                elseif (isset($republicarAdm)) 
+                {
+?>                    
+                    boliches();
+                    
+                    $.confirm({
+                            title: 'Evento republicado',
+                            content: 'El evento ha sido republicado con exito.',
+                            type: 'purple',
+                            typeAnimated: true,
+                            buttons: {
+                                        OK:  
+                                          {   
+                                              btnClass: 'btn-purple',
+
+                                               action: function()
+                                              {
+                                                boliches();
+                                              }
+
+
+                                          },
+                                      }
+                            });
+<?php                    
+                }
+                elseif (isset($_POST['crear_perfil'])) 
+                {
+?>                   
                     perfil();
 
                     $.alert({
@@ -349,7 +430,7 @@ switch (true) {
             <?php
         }
 
-        break;
+    break;
 
     case (isset($mensaje_error_interno)):
         ?>
@@ -362,34 +443,59 @@ switch (true) {
                     type: 'red',
                     typeAnimated: true,
                     buttons: {
-                        OK:
-                                {
-                                    btnClass: 'btn-red',
+                                OK:  
+                                  {   
+                                      btnClass: 'btn-red',
 
-                                },
-                    }
-                });
-        <?php
-        break;
+                                  },
+                              }
+                }); 
+<?php                     
+            break;
 
-    case (isset($_GET['boliche']) || isset($_POST['enviar_filtro_boliche'])):
-        ?>
-                boliches();
-        <?php
-        break;
+    case (isset($_GET['boliche']) || isset($_POST['enviar_filtro_boliche'])):  
+?>                 
+     boliches();
+<?php                     
+    break;
 
+    case (isset($eliminarAdm)):
+     die('asd');
+?>                 
+     boliches();
+<?php                     
+    break;
 
-    case (isset($_GET['previa']) || isset($_POST['enviar_filtro_bar'])):
-        ?>
-                previas();
-        <?php
-        break;
+    case (isset($_GET['previa']) || isset($_POST['enviar_filtro_bar'])):  
+?>                 
+     previas();
+<?php                     
+    break;
+        
+    case (isset($band)):
 
-    default:
-        ?>
-                boliches();
-        <?php
-        break;
+        if($band == 'editar')
+        {
+?>
+            evento();
+<?php
+        }
+        else
+        {                  
+?>
+            boliches();
+<?php
+        }
+
+    break;
+
+    default:          
+?>
+
+        boliches();
+<?php
+break;
+
 }
 ?>
 
@@ -563,7 +669,33 @@ switch (true) {
 <?php       } 
 ?>
         });
+        
+<?php
+        if (isset($_SESSION['id'])) 
+        {
+             
+?>        
+            $( ".glyphicon-envelope" ).click(function() 
+            {
+                    $( "#evento_ganador" ).toggle("slow");
 
+                    $(".glyphicon-envelope").toggleClass("activar");
+            });
+            
+<?php            
+            if(isset($resulGanador))
+            {
+?>                
+                setInterval(function()
+                {   $('.glyphicon-envelope').toggleClass('activar');
+                    $('#numero_ganador').fadeIn(1000).delay(1000).fadeOut(1500).delay(500);
+                }, 2000);
+<?php             
+            }            
+  
+            
+        }    
+?>
 
     /*
      

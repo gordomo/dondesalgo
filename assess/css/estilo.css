@@ -47,6 +47,27 @@ body
   font-size: 18px;
 
 }
+
+.glyphicon-envelope
+{
+
+  font-size: 25px;
+  color: #EDF1F4;
+  
+  margin-top: 9px;
+  cursor: pointer;
+  -webkit-transition: all 0.7s ease;
+  transition: all 0.7s ease;
+}
+
+.glyphicon-envelope:hover ,.glyphicon-envelope.activar
+{
+  color: #fff;
+  -webkit-box-shadow: #55306A 0px 0px 15px 5px ;
+  box-shadow: #55306A 0px 0px 15px 5px; 
+
+}
+
 #menu_user
 {
   margin-top: 5px;

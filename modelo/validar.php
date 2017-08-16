@@ -679,7 +679,7 @@ require_once("modelo/logs.php");
          }
          else
          {
-            $permitidos = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ "; 
+            $permitidos = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789 "; 
 
             for ($i=0; $i<strlen($titulo); $i++)
             { 
