@@ -187,7 +187,7 @@
                                         DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado 
                                   FROM eventos 
 
-                                  WHERE tipo = $tipo AND fechainicio >= $fechas[0] AND estado = $estado
+                                  WHERE tipo = $tipo AND fechainicio >= '$fechas[0]'
 
                                   ORDER BY fechainicio ASC;"; 
 
@@ -340,6 +340,7 @@
       }
 
       
+
       public function updateEvento($nombreevento, $fechainicio, $horainicio, $horafin, $descripcion, $fotoevento, $direccion, $tipo, $id_evento, $datosUsuario)
       { 
           
@@ -348,6 +349,7 @@
             $consulta = " UPDATE eventos SET nombreevento = ?, descripcion = ?, fechainicio = ?, horainicio = ?, horafin = ?, fotoevento = ? WHERE ideventos = ? ";
             
             $sentencia = $this->conexion_db->prepare($consulta);
+
 
             $sentencia->bind_param("ssssssi", $nombreevento, $descripcion, $fechainicio, $horainicio, $horafin, $fotoevento, $id_evento);
           }
