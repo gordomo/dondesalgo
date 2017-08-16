@@ -359,6 +359,7 @@
             
             $sentencia = $this->conexion_db->prepare($consulta);
 
+
             $sentencia->bind_param("ssssssi", $nombreevento, $descripcion, $fechainicio, $horainicio, $horafin, $fotoevento, $id_evento);
           }
           else

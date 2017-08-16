@@ -877,7 +877,6 @@
 
           if(isset($_POST['filtro']))
           {
-
              $resulEventos= $eventos->getEventosConFiltro();
           }
           else
