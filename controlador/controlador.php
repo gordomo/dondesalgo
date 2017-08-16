@@ -48,7 +48,9 @@
                         require_once('modelo/evento.php');
 
                         $eventos_boliches= new evento();
-                        
+          
+                        $resulGanador = $eventos_boliches->getEventoGanador(2);
+
                         $resulEventos= $eventos_boliches->getEventos(); 
                         
                      } elseif(isset($_SESSION['admin'])) {
@@ -60,6 +62,7 @@
                         $eventos_boliches= new evento();
                         
                         $resulEventos= $eventos_boliches->getEventos(true); 
+
                      }
                     
                break;
@@ -819,9 +822,9 @@
             $hora_inicio= $_POST['hora_inicio'];
 
             $fechaYhora= $fecha_inicio. " " . $hora_inicio;
+          
             
-
-            $voto= new voto();
+            $voto= new voto(); 
 
             $voto->setVotoUsuario($idevento,$fechaYhora);
 
@@ -835,7 +838,7 @@
 
             }
 
-            $resulEventos= $evento->getEventos();
+            $resulEventos= $evento->getEventos();   
                          
           
       break;
@@ -851,30 +854,35 @@
           {
             case (isset($_GET['boliche']) || isset($_POST['enviar_filtro_boliche'])):
               $acceso_boliches="si";
+              $tipo=2;  
             break;
 
             case (isset($_GET['previa']) || isset($_POST['enviar_filtro_bar'])):
               $acceso_previas="si";
+              $tipo=3;  
             break;
             
             default:
               $acceso_boliches="si";
+              $tipo=2;  
             break;
           }
 
           require_once('modelo/evento.php');
 
           $eventos= new evento();
+          
+          $resulGanador = $eventos->getEventoGanador($tipo);
+       
 
           if(isset($_POST['filtro']))
           {
 
-             $resulEventos = $eventos->getEventosConFiltro();
-
+             $resulEventos= $eventos->getEventosConFiltro();
           }
           else
           {
-              
+
              $todos = false;
              if(isset($_SESSION['admin']))
              {
