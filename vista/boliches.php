@@ -26,8 +26,8 @@
         while ($fila = $resulEventos->fetch_array(MYSQLI_ASSOC)) 
         {
             if(!isset($_SESSION['admin'])&&($fila['estado'] == 1) || isset($_SESSION['admin']))
-            {
-?>
+            { 
+?>          
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 well well-lg sin-padding">
                      <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" style="margin-top: 30px;">
                           <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align: right;" ><img src="<?= 'upload'. $fila['fotoperfil'];?>" class="img-circle" alt=""  width="100px" height="100px"></div>
@@ -54,30 +54,50 @@
                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12  sin-padding">
                         <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
 <?php
-                                if($fila['estado'] == 0){
+                                if($fila['estado'] == 0)
+                                {
+                                    
+                                    echo '<p style="color: red;">EVENTO BORRADO</p>';
+                                    
+                                }
+                                elseif($fila['estado'] == 100)
+                                {
+                                    
                                     echo '<p style="color: red;">EVENTO DESHABILITADO</p>';
-                                };
+                                    
+                                }
+                               
 ?>                       
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 recuadro_descripcion" ><?=$fila['descripcion']; ?></div>
                         <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3"></div>
                      </div>
 <?php
-                    if(isset($_SESSION['admin']))
+            
+                    if(isset($_SESSION['admin']) || ((isset($_SESSION['boliche']) || isset($_SESSION['organizador'])) && ($_SESSION['id'] == $fila['idusuarios'])))
                     { 
-?>
+?>  
                         <form method="post" action="<?php echo htmlspecialchars('index.php');?>">
 <?php
-                            if($fila['estado'] == 1)
+                            if(isset($_SESSION['admin']))
                             {
+                                if($fila['estado'] == 1)
+                                {
 ?>
-                                <input type="radio" name="accion" value="eliminar"> Deshabilitar publicación
+                                    <input type="radio" name="accion" value="deshabilitar"> Deshabilitar publicación
 <?php
+                                }
+                                else
+                                {
+?>
+                                    <input type="radio" name="accion" value="habilitar"> Habilitar publicación
+<?php
+                                }
                             }
-                            else
+                            elseif(isset($_SESSION['boliche']) || isset($_SESSION['organizador']))
                             {
 ?>
-                                <input type="radio" name="accion" value="republicar"> Habilitar publicación
+                                    <input type="radio" name="accion" value="borrar"> Borrar publicación
 <?php
                             }
 ?>                           

@@ -112,7 +112,7 @@
 
                       WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$fechas[7]' ";
           if(!$todos){
-              $consulta .= "AND estado <> 0 "; 
+              $consulta .= "AND estado = 1 "; 
           }
           
           $consulta .= "ORDER BY fechainicio ASC;";
@@ -227,7 +227,7 @@
 
       }
       
-      public function getEvento($id_evento)
+      public function getEventoAdm($id_evento)
       {
           $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
                             DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin, fotoperfil, fotoevento
@@ -392,9 +392,9 @@
           return 1; 
       }
       
-      public function deleteEvento($idEvento)
+      public function dehabilitarEvento($idEvento)
       { 
-          $estado = 0;
+          $estado = 100;
           
           $consulta = " UPDATE eventos SET estado = ? WHERE ideventos = ? ";
 
@@ -484,9 +484,39 @@
       }
 
 
-      public function republicarEvento($idEvento)
+      public function habilitarEvento($idEvento)
       { 
           $estado = 1;
+          
+          $consulta = " UPDATE eventos SET estado = ? WHERE ideventos = ? ";
+
+          $sentencia = $this->conexion_db->prepare($consulta);
+
+          $sentencia->bind_param("ii", $estado, $idEvento);
+
+          if(!$sentencia->execute())
+          {
+
+            $contenido="Fallo al ejecutarse la consulta setEvento:  (" . $sentencia->errno . ")" . $sentencia->error.".";
+
+            $log = new logs();
+
+            $log->setLog($contenido);
+
+            return $this->mje_error;
+
+          }
+
+          $sentencia->close();
+
+          $this->conexion_db->close();
+
+          return 1; 
+      }
+      
+      public function borrarEvento($idEvento)
+      { 
+          $estado = 0;
           
           $consulta = " UPDATE eventos SET estado = ? WHERE ideventos = ? ";
 
