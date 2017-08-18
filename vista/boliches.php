@@ -36,15 +36,45 @@
                             <div  class="col-xs-12 col-sm-12 col-md-10 col-lg-10" data-container="body" data-toggle="tooltip" data-placement="bottom" title="<?=$fila['direccion']; ?>" style="border: 3px solid #474747; height: 80px;">
                                 <span class="glyphicon glyphicon-map-marker" ></span>                 
                             </div>
-                             <div  class="col-xs-12 col-sm-12 col-md-2 col-lg-2" >
+                             <div  class="col-xs-12 col-sm-12 col-md-2 col-lg-2 " >
                                 <span class="glyphicon glyphicon-calendar"></span>     
                             </div>
                           </div>
                      </div>
-                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12  sin-padding" >
+                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" >
                         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" ><b><?=$fila['nombreevento']; ?></b></div>
-                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" ><?=$fila['fecha_inicio']." ".$fila['horainicio']." - ".$fila['horafin']; ?></div>
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" >
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
+                                <?php
+                                    $fecha = explode("/", $fila['fecha_inicio']);
+                                    
+                                    switch ($fecha[1])
+                                    {
+                                        case '01': $mes = "Enero"; break;
+                                        case '02': $mes = "Febrero"; break;
+                                        case '03': $mes = "Marzo"; break;
+                                        case '04': $mes = "Abril"; break;
+                                        case '05': $mes = "Mayo"; break;
+                                        case '06': $mes = "Junio"; break;
+                                        case '07': $mes = "Julio"; break;
+                                        case '08': $mes = "Agosto"; break;
+                                        case '09': $mes = "Septiembre"; break;
+                                        case '10': $mes = "Octubre"; break;
+                                        case '11': $mes = "Noviembre"; break;
+                                        case '12': $mes = "Diciembre"; break;
+                                    }
+                                    $dias = array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado');
+                                    $dia = $dias[date('N', strtotime($fecha[0].'-'.$fecha[1].'-'.$fecha[2]))];
+                                    echo $dia . " " . $fecha[0] ." de " . $mes;
+                                    
+                                ?> 
+                            </div>
+                            <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5" align="right"><?= $fila['horainicio']; ?></div>
+                            <div class="col-xs-2 col-sm-2 col-md-3 col-lg-2" align="center">-</div>
+                            <div class="col-xs-5 col-sm-5 col-md-4 col-lg-5" align="left"><?= $fila['horafin']; ?></div>
+                            
+                        </div>
                      </div>
                      <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12  sin-padding">
                         <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3"></div>
@@ -125,25 +155,25 @@
 
 ?>                         
 
-                <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1"></div>
-                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+                            <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1"></div>
+                            <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
 
-                <form id="form_enviar_voto" method="post" action="<?php echo htmlspecialchars('index.php'); ?>">         
-              
-                    <i class="fa fa-hand-o-right enviar_voto" aria-hidden="true" data-container="body" data-toggle="tooltip" data-placement="bottom" title="Votar"></i>
-      
-                    <input type="hidden" name="id_evento" id="id_evento" value="<?= $fila['ideventos']; ?>">
-                    <input type="hidden" name="fecha_inicio" id="fecha_inicio" value="<?= $fila['fecha_inicio']; ?>">
-                    <input type="hidden" name="hora_inicio" id="hora_inicio" value="<?= $fila['horainicio']; ?>">
-                    <input type="hidden" name="mensaje_oculto_form" id="mensaje_oculto_form" value="false">
-                    <input type="hidden" name="enviar_voto" id="enviar_voto" value="1">
-                  
-                </form>
+                            <form id="form_enviar_voto" method="post" action="<?php echo htmlspecialchars('index.php'); ?>">         
 
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1"></div>
+                                <i class="fa fa-hand-o-right enviar_voto" aria-hidden="true" data-container="body" data-toggle="tooltip" data-placement="bottom" title="Votar"></i>
+
+                                <input type="hidden" name="id_evento" id="id_evento" value="<?= $fila['ideventos']; ?>">
+                                <input type="hidden" name="fecha_inicio" id="fecha_inicio" value="<?= $fila['fecha_inicio']; ?>">
+                                <input type="hidden" name="hora_inicio" id="hora_inicio" value="<?= $fila['horainicio']; ?>">
+                                <input type="hidden" name="mensaje_oculto_form" id="mensaje_oculto_form" value="false">
+                                <input type="hidden" name="enviar_voto" id="enviar_voto" value="1">
+
+                            </form>
+
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1"></div>
 <?php
-                }
+                    }
             }
 ?>
 
