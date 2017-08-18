@@ -438,7 +438,7 @@
          $descripcion = str_replace(array("\r\n","\r","\n","\\r","\\n","\\r\\n"),"<br/>",$descripcion);
          $id_evento = $_POST['idevento'];
          $direccion = $_POST['direccion'];
-                  
+         
          $tipo = 'no';
          
          if(isset($_POST['tipo_evento']))
@@ -523,7 +523,15 @@
 
                             $eventos_boliches= new evento();
                             
-                            $resulEventos= $eventos_boliches->getEventos();
+                            if(isset($_SESSION['admin']))
+                            {
+                                $resulEventos= $eventos_boliches->getEventos(true);
+                            }
+                            else
+                            {
+                                $resulEventos= $eventos_boliches->getEventos();
+                            }
+                            
 
                         }
                             
@@ -546,88 +554,118 @@
           $accion = $_POST['accion'];
           require_once('modelo/evento.php');
           require_once('modelo/usuarios.php');
+          $evento = new evento(); 
           
-          if($accion == 'editar')
-          {
-              $band = 'editar';
-              
-              //Se busca el evento a editar a traves del id del evento
-              $evento = new evento();
-              $resulEvento = $evento->getEvento($_POST['idevento']);
-              $evento = $resulEvento->fetch_array(MYSQLI_ASSOC);
-              
-              $usuario = new usuarios();
-              $tipoUsuario = $usuario->getTipoUsuario($evento['idusuarios']);
-              
-              //Convierte el los <br/> en saltos de linea para que se pueda ver tal cual estaba escrito
-              $descripcion= $evento['descripcion']; 
-              $descripcion = str_replace("<br/>", "\r\n", $descripcion);
-              
-              //Convierte la fecha del formato dd/mm/aaaa al formato dd.mm.aaaa
-              $fecha_inicio = explode("/", $evento['fecha_inicio']);
-              $fecha_inicio = $fecha_inicio[0].".".$fecha_inicio[1].".".$fecha_inicio[2];
-              
-              
-              
+            switch($accion){
+                case 'editar':
+
+                      $band = 'editar';
+
+                      //Se busca el evento a editar a traves del id del evento
+                      $resulEvento = $evento->getEventoAdm($_POST['idevento']);
+                      $evento = $resulEvento->fetch_array(MYSQLI_ASSOC);
+                      
+                      if(isset($_SESSION['admin']))
+                      {
+                            $usuario = new usuarios();
+                            $tipoUsuario = $usuario->getTipoUsuario($evento['idusuarios']);
+                      }
+
+                      //Convierte el los <br/> en saltos de linea para que se pueda ver tal cual estaba escrito
+                      $descripcion= $evento['descripcion']; 
+                      $descripcion = str_replace("<br/>", "\r\n", $descripcion);
+
+                      //Convierte la fecha del formato dd/mm/aaaa al formato dd.mm.aaaa
+                      $fecha_inicio = explode("/", $evento['fecha_inicio']);
+                      $fecha_inicio = $fecha_inicio[0].".".$fecha_inicio[1].".".$fecha_inicio[2];
+
+                    break;
+
+                case 'deshabilitar':
+
+                      $band = 'eliminar';
+
+                      $idEvento = $_POST['idevento'];
+                      $resulEliminar = $evento->dehabilitarEvento($idEvento);
+
+                      if($resulEliminar == 99)
+                     {
+                        $mensaje_error_interno="activado";
+                     }
+                     else
+                     {
+                         $mensaje_exito="activado";
+
+                         $acceso_boliches="si";
+
+                         $deshabilitarAdm = 'si';
+
+                         $eventos_boliches= new evento();
+
+                         $resulEventos= $eventos_boliches->getEventos(true);
+
+                     }
+
+                    break;
+
+                case 'habilitar':
+
+                      require_once('modelo/evento.php');
+                      require_once('modelo/usuarios.php');
+                      $band = 'eliminar';
+
+                      $idEvento = $_POST['idevento'];
+                      $resulEliminar = $evento->habilitarEvento($idEvento);
+
+                      if($resulEliminar == 99)
+                      {
+                         $mensaje_error_interno="activado";
+                      }
+                      else
+                      {
+                          $mensaje_exito="activado";
+
+                          $acceso_boliches="si";
+
+                          $habilitarAdm = 'si';
+
+                          $eventos_boliches= new evento();
+
+                          $resulEventos= $eventos_boliches->getEventos(true);
+
+
+
+                      }
+                    break;
+
+                case 'borrar':
+
+                      $band = 'borrar';
+
+                      $idEvento = $_POST['idevento'];
+                      $resulEliminar = $evento->borrarEvento($idEvento);
+
+                      if($resulEliminar == 99)
+                     {
+                        $mensaje_error_interno="activado";
+                     }
+                     else
+                     {
+                         $mensaje_exito="activado";
+
+                         $acceso_boliches="si";
+
+                         $borrarEvento = 'si';
+
+                         $eventos_boliches= new evento();
+
+                         $resulEventos= $eventos_boliches->getEventos(true);
+
+                     }
+                    break;
           }
-          elseif($accion == 'eliminar') //Comprueba que la accion tomada por el adminsitrador sea la de eliminar
-          {
-             $band = 'eliminar';
-             
-             $evento = new evento();
-             $idEvento = $_POST['idevento'];
-             $resulEliminar = $evento->deleteEvento($idEvento);
-             
-             if($resulEliminar == 99)
-            {
-               $mensaje_error_interno="activado";
-            }
-            else
-            {
-                $mensaje_exito="activado";
-
-                $acceso_boliches="si";
-
-                $eliminarAdm = 'si';
-
-                $eventos_boliches= new evento();
-
-                $resulEventos= $eventos_boliches->getEventos(true);
-            
-                
-            }
-             
-          }
-          elseif($accion == 'republicar') //Comprueba que la accion tomada por el adminsitrador sea republicar
-          {
-                require_once('modelo/evento.php');
-                require_once('modelo/usuarios.php');
-                $band = 'eliminar';
-
-                $evento = new evento();
-                $idEvento = $_POST['idevento'];
-                $resulEliminar = $evento->republicarEvento($idEvento);
-
-                if($resulEliminar == 99)
-                           {
-                              $mensaje_error_interno="activado";
-                           }
-                           else
-                           {
-                               $mensaje_exito="activado";
-
-                               $acceso_boliches="si";
-
-                               $republicarAdm = 'si';
-
-                               $eventos_boliches= new evento();
-
-                               $resulEventos= $eventos_boliches->getEventos(true);
-
-
-
-                           }
-          }
+          
+          
       break; 
       case (isset($_REQUEST['crear_evento'])):
       

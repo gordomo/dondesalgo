@@ -146,7 +146,7 @@
 <?php
         }  
 ?> 
-                      <li class="demo_li" data-container="body" data-toggle="tooltip" data-placement="bottom" title="Cerrar Seccion"><a href='index.php?cerrar_seccion'><div class="icono"><i class="fa fa-power-off"></i></div><div >Cerrar seccion</div></a></li>
+                      <li class="demo_li" data-container="body" data-toggle="tooltip" data-placement="bottom" title="Cerrar Seccion"><a href='index.php?cerrar_seccion'><div class="icono"><i class="fa fa-power-off"></i></div><div >Cerrar sesión</div></a></li>
                   </ul>
             </div>
                

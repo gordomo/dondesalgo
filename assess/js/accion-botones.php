@@ -357,14 +357,14 @@ switch (true) {
                             });
 <?php                            
                 }
-                elseif (isset($eliminarAdm)) 
+                elseif (isset($deshabilitarAdm)) 
                 {
 ?>                    
                     boliches();
                     
                     $.confirm({
-                            title: 'Evento eliminado',
-                            content: 'El evento ha sido eliminado con exito.',
+                            title: 'Evento deshabilidato',
+                            content: 'El evento ha sido deshabilitado con exito.',
                             type: 'purple',
                             typeAnimated: true,
                             buttons: {
@@ -383,14 +383,40 @@ switch (true) {
                             });
 <?php                    
                 }
-                elseif (isset($republicarAdm)) 
+                elseif (isset($habilitarAdm)) 
                 {
 ?>                    
                     boliches();
                     
                     $.confirm({
-                            title: 'Evento republicado',
-                            content: 'El evento ha sido republicado con exito.',
+                            title: 'Evento habilitado',
+                            content: 'El evento ha sido habilitado con exito.',
+                            type: 'purple',
+                            typeAnimated: true,
+                            buttons: {
+                                        OK:  
+                                          {   
+                                              btnClass: 'btn-purple',
+
+                                               action: function()
+                                              {
+                                                boliches();
+                                              }
+
+
+                                          },
+                                      }
+                            });
+<?php                    
+                }
+                elseif (isset($borrarEvento)) 
+                {
+?>                    
+                    boliches();
+                    
+                    $.confirm({
+                            title: 'Evento borrado',
+                            content: 'El evento ha sido borrado con exito.',
                             type: 'purple',
                             typeAnimated: true,
                             buttons: {
