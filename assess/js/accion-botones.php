@@ -484,6 +484,12 @@ switch (true) {
      boliches();
 <?php                     
     break;
+    
+    case (isset($_GET['usuario'])):  
+?>                 
+     usuario();
+<?php                     
+    break;
 
     case (isset($eliminarAdm)):
 ?>                 
@@ -568,8 +574,7 @@ break;
                 "-webkit-box-shadow": "inset 0 3px 5px rgba(0, 0, 0, .125)", "box-shadow": "inset 0 3px 5px rgba(0, 0, 0, .125)"});
 
         }
-
-
+        
         $("#boton4").click(registro);
 
         function registro()
@@ -617,6 +622,15 @@ break;
         {
             $(".main").attr("class", "main row hidden");
             $("#menu8").attr("class", "main row show");
+            $(".btnSeccion").removeAttr('style');
+
+        }
+        
+       
+        function usuario()
+        {
+            $(".main").attr("class", "main row hidden");
+            $("#menu9").attr("class", "main row show");
             $(".btnSeccion").removeAttr('style');
 
         }

@@ -115,7 +115,12 @@
         
           <?php include('perfil.php');?>
            
-        </section>                
+        </section>
+        <section class="main row hidden" id="menu9">
+        
+          <?php include('usuario.php');?>
+           
+        </section>
     </div>    
         
     <div class="container" >

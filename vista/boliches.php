@@ -64,7 +64,7 @@
                                         case '11': $mes = "Noviembre"; break;
                                         case '12': $mes = "Diciembre"; break;
                                     }
-                                    $dias = array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado');
+                                    $dias = array('','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
                                     $dia = $dias[date('N', strtotime($fecha[0].'-'.$fecha[1].'-'.$fecha[2]))];
                                     echo $dia . " " . $fecha[0] ." de " . $mes;
                                     

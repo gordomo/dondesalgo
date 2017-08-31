@@ -33,10 +33,10 @@
             { 
 ?>                  
                             <div  class="form-group col-xs-12 col-sm-12 col-md-2 col-lg-2 sin-padding">
-                                
+                            <label for="perfil" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="div_perfil2" align="center" data-container="body" data-toggle="tooltip" data-placement="bottom" title="Agrega una foto de perfil aqui.">
                                         <span class="glyphicon glyphicon-plus" aria-hidden="true" id="icono_perfil2" ></span>
                                         <input type="file" id="perfil" name="perfil" style="display:none;">
-                                
+                            </label>    
                                 <label for="perfil" id="perfil-error"  class="error" style="display: none;"></label>
                             </div>    
 <?php
@@ -98,9 +98,9 @@
                                       <select name='tipo_evento' id='tipo_evento' class="form-control" >
 
                                         <option value='' >Ninguno</option>
-                                        <option value='2' <?php if($evento['tipo'] == 2): ?> selected <?php endif; ?> >Cachengue</option>
-                                        <option value='4' <?php if($evento['tipo'] == 4): ?> selected <?php endif; ?> >Previa</option>
-                                        <option value='5' <?php if($evento['tipo'] == 5): ?> selected <?php endif; ?> >Electronica</option>
+                                        <option value='2' <?php if(isset($evento['tipo']) && $evento['tipo'] == 2): ?> selected <?php endif; ?> >Cachengue</option>
+                                        <option value='4' <?php if(isset($evento['tipo']) && $evento['tipo'] == 4): ?> selected <?php endif; ?> >Previa</option>
+                                        <option value='5' <?php if(isset($evento['tipo']) && $evento['tipo'] == 5): ?> selected <?php endif; ?> >Electronica</option>
                                       </select>
                                 </div>
                             </div>   
@@ -169,7 +169,7 @@
                         <div  class="col-xs-12 col-sm-12 col-md-2 col-lg-2"></div>
 
                     </div>
-<?php
+<?php   
         if(isset($_SESSION['organizador']) || $tipoUsuario == 3)
         {    
 ?>                    
@@ -193,9 +193,9 @@
                     </div>
 <?php
         }
-        elseif(isset($_SESSION['boliche']) || $tipoUsuario == 2)
+        elseif((isset($_SESSION['boliche']) && isset($band)) || $tipoUsuario == 2)
         {
-?>
+?>          
             <input type="hidden" name="direccion" value="<?= $evento['direccion']; ?> ">
 <?php
         }
@@ -216,11 +216,11 @@
                             else
                             {
 ?>
-                            <label for="imagen_evento" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" id="div_portada" align="center" data-container="body" data-toggle="tooltip" data-placement="right" title="Agrega una foto de portada del evento aqui.">
-                                      <span class="glyphicon glyphicon-plus" aria-hidden="true" id="icono_portada" ></span>
-                                      <input type="file" id="imagen_evento" name="imagen_evento" style="display: none;">
-                            </label>
-                            <label for="imagen_evento" id="imagen_evento-error"  class="error" style="display: none;"></label>
+                                <label for="imagen_evento" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" id="div_portada" align="center" data-container="body" data-toggle="tooltip" data-placement="right" title="Agrega una foto de portada del evento aqui.">
+                                          <span class="glyphicon glyphicon-plus" aria-hidden="true" id="icono_portada" ></span>
+                                          <input type="file" id="imagen_evento" name="imagen_evento" style="display: none;">
+                                </label>
+                                <label for="imagen_evento" id="imagen_evento-error"  class="error" style="display: none;"></label>
 <?php
                             }
 ?> 
@@ -258,6 +258,7 @@
                     if(isset($_SESSION['admin']) || isset($accion) == 'editar')
                     {
 ?>                      <input type="hidden" name="idevento" value="<?= $evento['ideventos']; ?> ">
+                        <input type="hidden" name="idusuario" value="<?= $evento['idusuarios']; ?> ">
                         <input type="hidden" name="foto_portada" value="<?= $evento['fotoevento']; ?> ">
                             
                         <button class="btn btn-primary" id="editar_evento" name="editar_evento" value="Submit">Editar evento</button>

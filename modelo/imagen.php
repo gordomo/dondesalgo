@@ -20,10 +20,13 @@
       }
 
       
-      public function crearCarpetas($tipoUsuario)
+      public function crearCarpetas($tipoUsuario, $idusuario = 0)
       {
-
-          $carpetaUsuario = $_SERVER['DOCUMENT_ROOT'].'/sistema_boliche/upload/'. $tipoUsuario .'/'.$this->iduser;
+          if($idusuario == 0)
+          {
+              $idusuario = $this->iduser;
+          }
+          $carpetaUsuario = $_SERVER['DOCUMENT_ROOT'].'/sistema_boliche/upload/'. $tipoUsuario .'/'.$idusuario;
           
           //Verifica si existe la carpeta del usuario, en caso de que no las crea
           if(!is_dir($carpetaUsuario))
