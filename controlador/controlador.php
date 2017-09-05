@@ -616,20 +616,21 @@
 
                         //Se busca el evento a editar a traves del id del evento
                         $resulEvento = $evento->getEventoAdm($_POST['idevento']);
-                        $evento = $resulEvento->fetch_array(MYSQLI_ASSOC);
-
+                        $infoEvento = $resulEvento->fetch_array(MYSQLI_ASSOC);
+                                                
                         if(isset($_SESSION['admin']))
                         {
                               $usuario = new usuarios();
                               $tipoUsuario = $usuario->getTipoUsuario($evento['idusuarios']);
+                              
                         }
 
                         //Convierte el los <br/> en saltos de linea para que se pueda ver tal cual estaba escrito
-                        $descripcion= $evento['descripcion']; 
+                        $descripcion= $infoEvento['descripcion']; 
                         $descripcion = str_replace("<br/>", "\r\n", $descripcion);
 
                         //Convierte la fecha del formato dd/mm/aaaa al formato dd.mm.aaaa
-                        $fecha_inicio = explode("/", $evento['fecha_inicio']);
+                        $fecha_inicio = explode("/", $infoEvento['fecha_inicio']);
                         $fecha_inicio = $fecha_inicio[0].".".$fecha_inicio[1].".".$fecha_inicio[2];
 
                       break;
@@ -934,24 +935,37 @@
 
         break;
         case (isset($_GET['usuario'])):
-
-            require_once('modelo/usuarios.php');
-            require_once('modelo/evento.php');
             
-            $usuario = new usuarios();
-            $evento= new evento();
-            
-            $resulPerfil = $usuario->verPerfil($_GET['usuario']);
-            
-            if(isset($_SESSION['admin']) || isset($_SESSION['organizador']) || isset($_SESSION['boliche']))
+            if(is_numeric($_GET['usuario']))
             {
-                $resulEventoFin = $evento->verEventosFin($_GET['usuario']);
-                $resulEventoProx = $evento->verEventosProx($_GET['usuario']);
+                require_once('modelo/usuarios.php');
+                require_once('modelo/evento.php');
+
+                $usuario = new usuarios();
+                $evento= new evento();
+
+                $resulPerfil = $usuario->verPerfil($_GET['usuario']);
+
+                if(!isset($resulPerfil))
+                {
+                    header("Location: index.php");
+                }
+
+                if($resulPerfil['tipo'] != 1)
+                {
+                    $resulEventoFin = $evento->verEventosFin($_GET['usuario']);
+                    $resulEventoProx = $evento->verEventosProx($_GET['usuario']);
+                    
+                }
+            }
+            else
+            {
+                header("Location: index.php");
             }
             
             
+            
         break;
-        
         case (isset($_GET['cerrar_sesion'])):
 
             session_destroy();

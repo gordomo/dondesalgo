@@ -368,3 +368,12 @@ form .form-group textarea.form-control.error
     margin-top: 3px;
 }
 
+.perfil-final
+{
+    height: 50px;
+}
+
+.nombre-cuenta a:link
+{
+    text-decoration:none;   
+}

@@ -209,7 +209,7 @@
           $consulta="SELECT tipo FROM usuarios WHERE idusuarios = $idUsuario";
 
           $resultado = $this->conexion_db->query($consulta);
-
+          
           if(!$resultado)
           {
 
@@ -223,9 +223,11 @@
 
           }
 
-          $tipoUsuario = $resultado->fetch_array(MYSQLI_ASSOC);
+            $tipoUsuario = $resultado->fetch_array(MYSQLI_ASSOC);
 
-          return $tipoUsuario;          
+          return $tipoUsuario;  
+          
+          
       }
       
       public function verPerfil($idusuario)

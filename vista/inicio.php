@@ -77,7 +77,7 @@
     <div class="container" id="secciones">     
         <section class="main row hidden" id="menu1">
 
-          <?php include('boliches.php');?>
+          <?php include('boliches.php'); ?>
 
         </section>
 

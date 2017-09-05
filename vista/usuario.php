@@ -14,15 +14,20 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 informacion "><b>Información de contacto</b></div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 informacion" style="margin-top: 20px;"><b>Telefono:</b> <?= $resulPerfil['telefono']; ?></div>
-        
-        <div  class="col-xs-7 col-sm-6 col-md-6 col-lg-5" data-container="body" data-toggle="tooltip" data-placement="bottom" title="<?= $resulPerfil['direccion']; ?>" style="border: 3px solid #474747; height: 80px;">
-            <span class="glyphicon glyphicon-map-marker" ></span>                 
-        </div>
-    </div>
 <?php
-    if($resulPerfil['tipo'] != 1)
+    if($resulPerfil['tipo'] != 1 && $resulPerfil['tipo'] != 100)
     {
+        if($resulPerfil['tipo'] == 2)
+        {
+?>        
+            <div  class="col-xs-7 col-sm-6 col-md-6 col-lg-5" data-container="body" data-toggle="tooltip" data-placement="bottom" title="<?= $resulPerfil['direccion']; ?>" style="border: 3px solid #474747; height: 80px;">
+                <span class="glyphicon glyphicon-map-marker" ></span>                 
+            </div>
+<?php
+        }
 ?>
+    </div>
+
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 20px;">
         <div class="col-xs-10 col-sm-5 col-md-5 col-lg-5 sin-padding lista-eventos">
             <div class="col-xs-2 col-sm-3 col-md-3 col-lg-3 numero-evento sin-padding "><?= $resulEventoFin->num_rows; ?></div>
@@ -46,7 +51,17 @@
                         <b><?= $fila['nombreevento']; ?></b>
                     </div>
                     <div class="sin-padding fecha-evento-perfil " >
-                        <?= $fila['fecha_inicio']; ?>
+<?php
+                        $fecha = explode("/", $fila['fecha_inicio']);
+                                    
+                        //Si el primer caracter es 0, lo saca
+                        if(substr($fecha[1], -2, 1) == 0): $fecha[1] = trim($fecha[1], '0'); endif;
+
+                        $mes = array('','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
+                        $dia = array('','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
+                        $dia = $dia[date('N', strtotime($fecha[0].'-'.$fecha[1].'-'.$fecha[2]))];
+                        echo $dia . ", " . $fecha[0] ." de " . $mes[$fecha[1]];
+?>
                     </div>
                     <div class="sin-padding fecha-evento-perfil " >
                         <b>Direccion: </b><?= $fila['direccion']; ?>
@@ -81,7 +96,17 @@
                         <b><?= $fila['nombreevento']; ?></b>
                     </div>
                     <div class="sin-padding fecha-evento-perfil " >
-                        <?= $fila['fecha_inicio']; ?>
+<?php
+                        $fecha = explode("/", $fila['fecha_inicio']);
+                                    
+                        //Si el primer caracter es 0, lo saca
+                        if(substr($fecha[1], -2, 1) == 0): $fecha[1] = trim($fecha[1], '0'); endif;
+
+                        $mes = array('','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
+                        $dia = array('','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
+                        $dia = $dia[date('N', strtotime($fecha[0].'-'.$fecha[1].'-'.$fecha[2]))];
+                        echo $dia . ", " . $fecha[0] ." de " . $mes[$fecha[1]];
+?>
                     </div>
                     <div class="sin-padding fecha-evento-perfil " >
                         <b>Direccion: </b><?= $fila['direccion']; ?>
@@ -98,4 +123,5 @@
     }
 ?>
 
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 perfil-final"></div>
 </article>

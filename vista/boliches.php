@@ -31,7 +31,7 @@
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 well well-lg sin-padding">
                      <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" style="margin-top: 30px;">
                           <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align: right;" ><img src="<?= 'upload'. $fila['fotoperfil'];?>" class="img-circle" alt=""  width="100px" height="100px"></div>
-                          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" ><b><?=$fila['nombre']; ?></b></div>
+                          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 nombre-cuenta" ><b><a href="index.php?usuario=<?= $fila['idusuarios'] ?>"><?=$fila['nombre']; ?></a></b></div>
                           <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" >
                             <div  class="col-xs-12 col-sm-12 col-md-10 col-lg-10" data-container="body" data-toggle="tooltip" data-placement="bottom" title="<?=$fila['direccion']; ?>" style="border: 3px solid #474747; height: 80px;">
                                 <span class="glyphicon glyphicon-map-marker" ></span>                 
@@ -49,24 +49,13 @@
                                 <?php
                                     $fecha = explode("/", $fila['fecha_inicio']);
                                     
-                                    switch ($fecha[1])
-                                    {
-                                        case '01': $mes = "Enero"; break;
-                                        case '02': $mes = "Febrero"; break;
-                                        case '03': $mes = "Marzo"; break;
-                                        case '04': $mes = "Abril"; break;
-                                        case '05': $mes = "Mayo"; break;
-                                        case '06': $mes = "Junio"; break;
-                                        case '07': $mes = "Julio"; break;
-                                        case '08': $mes = "Agosto"; break;
-                                        case '09': $mes = "Septiembre"; break;
-                                        case '10': $mes = "Octubre"; break;
-                                        case '11': $mes = "Noviembre"; break;
-                                        case '12': $mes = "Diciembre"; break;
-                                    }
-                                    $dias = array('','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
-                                    $dia = $dias[date('N', strtotime($fecha[0].'-'.$fecha[1].'-'.$fecha[2]))];
-                                    echo $dia . " " . $fecha[0] ." de " . $mes;
+                                    //Si el primer caracter es 0, lo saca
+                                    if(substr($fecha[1], -2, 1) == 0): $fecha[1] = trim($fecha[1], '0'); endif;
+                                    
+                                    $mes = array('','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
+                                    $dia = array('','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
+                                    $dia = $dia[date('N', strtotime($fecha[0].'-'.$fecha[1].'-'.$fecha[2]))];
+                                    echo $dia . ", " . $fecha[0] ." de " . $mes[$fecha[1]];
                                     
                                 ?> 
                             </div>
