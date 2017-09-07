@@ -621,7 +621,7 @@
                         if(isset($_SESSION['admin']))
                         {
                               $usuario = new usuarios();
-                              $tipoUsuario = $usuario->getTipoUsuario($evento['idusuarios']);
+                              $tipoUsuario = $usuario->getTipoUsuario($infoEvento['idusuarios']);
                               
                         }
 
