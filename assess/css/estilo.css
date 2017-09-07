@@ -278,3 +278,102 @@ form .form-group textarea.form-control.error
  border:2px solid red;
 
 }
+
+.colorfondo
+{
+    background-color: red;
+}
+
+.fotoperfil
+{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.colorfondo2
+{
+    background-color: yellow;
+}
+
+.lista-eventos
+{
+    background-color: #F2F2F2;
+}
+
+.nombre-perfil
+{
+    font-size: 20px;
+    text-align:center;
+}
+
+.informacion
+{
+    font-size: 15px;
+}
+
+.borde-info
+{
+    border-style: solid;
+    border-width: thin;
+    border-radius: 5px;
+}
+
+.columna-eventos
+{
+    text-align: center;
+    font-size: 12px;
+    margin-top:15px;
+}
+
+.numero-evento
+{
+    text-align: left;
+    font-size: 2em;
+    
+}
+
+.eventos
+{
+    margin-top: 5px;
+    height: 60px;
+    background-color: #BDBDBD;
+}
+
+.img-evento-perfil
+{
+    margin-top: 3px;
+    margin-left: 3px;
+    height: 54px;
+    width: 54px;
+}
+.nombre-evento-perfil
+{
+    margin-top: 3px;
+    margin-left: 3px;
+    font-size: 13px;
+}
+
+.fecha-evento-perfil
+{
+    margin-top: 2px;
+    margin-left: 3px;
+    font-size: 12px;
+    text-align: left;
+}
+
+.foto-evento-perfil
+{
+    border-radius: 50%;
+    margin-top: 3px;
+}
+
+.perfil-final
+{
+    height: 50px;
+}
+
+.nombre-cuenta a:link
+{
+    text-decoration:none;   
+}

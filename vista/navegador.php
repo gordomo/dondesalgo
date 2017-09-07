@@ -137,6 +137,7 @@
             <div  class="col-xs-4 col-sm-12 col-md-2 col-lg-2 sin-padding" style="display: none;" id="menu_user">
                   <span class="pop_ctrl"><i class="fa fa-bars" data-container="body" data-toggle="tooltip" data-placement="bottom" title="Menu desplegable"></i></span>
                   <ul id="demo_ul" style="z-index: 100;">
+                      <li class="demo_li" data-container="body" data-toggle="tooltip" data-placement="bottom" title="Ver tu perfil"><a href="index.php?usuario=<?= $_SESSION['id'] ?>" class="boton9"><div class="icono"><i class="fa fa-user"></i></div><div >Mi perfil</div></a></li>
                       <li class="demo_li" data-container="body" data-toggle="tooltip" data-placement="bottom" title="Pon tu foto de perfil"><a href="#" class="boton8"><div class="icono"><i class="fa fa-user"></i></div><div >Foto Perfil</div></a></li>
 <?php
         if(isset($_SESSION['boliche']) || isset($_SESSION['organizador']))
@@ -146,7 +147,7 @@
 <?php
         }  
 ?> 
-                      <li class="demo_li" data-container="body" data-toggle="tooltip" data-placement="bottom" title="Cerrar Seccion"><a href='index.php?cerrar_seccion'><div class="icono"><i class="fa fa-power-off"></i></div><div >Cerrar sesión</div></a></li>
+                      <li class="demo_li" data-container="body" data-toggle="tooltip" data-placement="bottom" title="Cerrar Sesion"><a href='index.php?cerrar_sesion'><div class="icono"><i class="fa fa-power-off"></i></div><div >Cerrar sesión</div></a></li>
                   </ul>
             </div>
                

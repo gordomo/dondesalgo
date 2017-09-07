@@ -173,10 +173,13 @@
 
       }
 
-      public function getDatosUsuario()
+      public function getDatosUsuario($idusuario = 0)
       {
-          
-         $idusuario = $_SESSION["id"];
+         if($idusuario == 0)
+         {
+             $idusuario = $_SESSION["id"];
+         }
+         
 
          $consulta="SELECT tipo, nombre, direccion, fotoperfil FROM usuarios WHERE idusuarios = $idusuario";
 
@@ -206,7 +209,7 @@
           $consulta="SELECT tipo FROM usuarios WHERE idusuarios = $idUsuario";
 
           $resultado = $this->conexion_db->query($consulta);
-
+          
           if(!$resultado)
           {
 
@@ -220,9 +223,36 @@
 
           }
 
-          $tipoUsuario = $resultado->fetch_array(MYSQLI_ASSOC);
+            $tipoUsuario = $resultado->fetch_array(MYSQLI_ASSOC);
 
-          return $tipoUsuario;          
+          return $tipoUsuario;  
+          
+          
+      }
+      
+      public function verPerfil($idusuario)
+      {
+         $consulta="SELECT tipo, email, nombre, apellido, direccion, telefono, contacto, fotoperfil, estado FROM usuarios WHERE idusuarios = $idusuario";
+
+         $resultado = $this->conexion_db->query($consulta);
+
+         if(!$resultado)
+         {
+
+            $contenido="Fallo al ejecutarse la consulta getDatosUsuario:  (" . $this->conexion_db->errno . ")" . $this->conexion_db->error.".";
+
+            $log = new logs();
+
+            $log->setLog($contenido);
+
+            return $this->mje_error;
+
+         }
+
+         $datosPerfil = $resultado->fetch_array(MYSQLI_ASSOC);
+
+         return $datosPerfil;
+
       }
       
     }

@@ -544,6 +544,60 @@
           return 1; 
       }
       
+      public function verEventosFin($idusuario)
+      {
+          $consulta="SELECT ideventos, nombreevento, direccion , DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, fotoevento
+                      FROM eventos 
+                      WHERE idusuarios = $idusuario AND fechainicio < now()";
+          
+                      $resultadoFin = $this->conexion_db->query($consulta);
+
+                      if(!$resultadoFin)
+                      {
+
+                        $contenido="Fallo al ejecutarse la consulta getEventos en cualquier momento:  (" . $this->conexion_db->errno . ")" . $this->conexion_db->error.".";
+
+                        $log = new logs();
+
+                        $log->setLog($contenido);
+
+                        return $this->mje_error;
+
+                      }
+                      
+                      return $resultadoFin;
+      }
+      
+      public function verEventosProx($idusuario)
+      {
+          $consulta="SELECT ideventos, nombreevento, direccion , DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, fotoevento
+                      FROM eventos 
+                      WHERE idusuarios = $idusuario AND fechainicio > now()";
+          
+                      $resultadoProx = $this->conexion_db->query($consulta);
+
+                      if(!$resultadoProx)
+                      {
+
+                        $contenido="Fallo al ejecutarse la consulta getEventos en cualquier momento:  (" . $this->conexion_db->errno . ")" . $this->conexion_db->error.".";
+
+                        $log = new logs();
+
+                        $log->setLog($contenido);
+
+                        return $this->mje_error;
+
+                      }
+                      
+                      
+                      
+                      $this->conexion_db->close();
+                      
+                      return $resultadoProx;
+      }
+      
+      
+      
   }      
 
 
