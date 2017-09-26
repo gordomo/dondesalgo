@@ -22,6 +22,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 btn-primary">Hay <span class="badge"><?= (!empty($resulEventos->num_rows)) ? $resulEventos->num_rows : 0; ?></span> eventos de boliches disponibles. ¿A cual queres ir?.</div>
             
 <?php
+        $i=0;
 
         while ($fila = $resulEventos->fetch_array(MYSQLI_ASSOC)) 
         {
@@ -147,15 +148,18 @@
                             <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1"></div>
                             <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
 
-                            <form id="form_enviar_voto" method="post" action="<?php echo htmlspecialchars('index.php'); ?>">         
+                            <form id="form_enviar_voto<?= $i; ?>" method="post" action="<?php echo htmlspecialchars('index.php'); ?>">         
 
-                                <i class="fa fa-hand-o-right enviar_voto" aria-hidden="true" data-container="body" data-toggle="tooltip" data-placement="bottom" title="Votar"></i>
-
+                                <i class="fa fa-hand-o-right icono_voto" aria-hidden="true" data-container="body" data-toggle="tooltip" data-placement="bottom" title="Votar"></i>
+                                
+                                <input type="hidden" name="enviar_voto" class="enviar_voto" value="<?= $i; ?>">
                                 <input type="hidden" name="id_evento" id="id_evento" value="<?= $fila['ideventos']; ?>">
                                 <input type="hidden" name="fecha_inicio" id="fecha_inicio" value="<?= $fila['fecha_inicio']; ?>">
                                 <input type="hidden" name="hora_inicio" id="hora_inicio" value="<?= $fila['horainicio']; ?>">
                                 <input type="hidden" name="mensaje_oculto_form" id="mensaje_oculto_form" value="false">
-                                <input type="hidden" name="enviar_voto" id="enviar_voto" value="1">
+                                
+                                
+                                
 
                             </form>
 
@@ -170,6 +174,7 @@
 
 <?php
             }
+         $i++;   
         }
     }
 ?>

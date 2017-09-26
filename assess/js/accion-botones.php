@@ -658,15 +658,18 @@ break;
 
         }
 
-        $('.enviar_voto').click(function (e) 
+        $('.icono_voto').click(function (e) 
         {
-            e.preventDefault();
-            
+            e.preventDefault(); 
+            id_form_evento = $(this).next().val();
+                       
 <?php
             if (isset($_COOKIE['no_mensaje']) || isset($no_mensaje)) 
             {
 ?>
-                $("#form_enviar_voto").submit();
+                 
+                
+                $("#form_enviar_voto"+id_form_evento).submit();
 <?php
             } 
             else 
@@ -696,7 +699,7 @@ break;
                                            $("#mensaje_oculto_form").val(0);                                            
                                         }    
 
-                                        $("#form_enviar_voto").submit();
+                                        $("#form_enviar_voto"+id_form_evento).submit();
                                     }
                                 },
 
