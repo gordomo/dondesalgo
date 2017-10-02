@@ -110,7 +110,7 @@
                             DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado
                       FROM eventos 
 
-                      WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$fechas[7]'";
+                      WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$fechas[7]' ";
           if(!$todos){
               $consulta .= "AND estado = 1 "; 
           }
