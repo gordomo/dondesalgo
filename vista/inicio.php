@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="assess/css/jquery-confirm.min.css">
     <link rel="stylesheet" href="assess/css/jquery.timepicker.css">
     <link rel="stylesheet" href="assess/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assess/css/ToolTip.css">
     <link rel="stylesheet" href="assess/css/estilo.css">
     <script src="assess/js/jquery-latest.js"></script>
     <script src="assess/js/bootstrap.min.js"></script>
@@ -76,7 +77,7 @@
     <div class="container" id="secciones">     
         <section class="main row hidden" id="menu1">
 
-          <?php include('boliches.php');?>
+          <?php include('boliches.php'); ?>
 
         </section>
 
@@ -114,7 +115,12 @@
         
           <?php include('perfil.php');?>
            
-        </section>                
+        </section>
+        <section class="main row hidden" id="menu9">
+        
+          <?php include('usuario.php');?>
+           
+        </section>
     </div>    
         
     <div class="container" >
