@@ -1,7 +1,7 @@
 <?php
 
-  require_once("modelo/conexion.php");
-  require_once("modelo/logs.php");
+  require_once("conexion.php");
+  require_once("logs.php");
 
    
   class evento extends conexion
@@ -110,7 +110,7 @@
                             DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado
                       FROM eventos 
 
-                      WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$fechas[7]' ";
+                      WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$fechas[7]'";
           if(!$todos){
               $consulta .= "AND estado = 1 "; 
           }
@@ -118,7 +118,7 @@
           $consulta .= "ORDER BY fechainicio ASC;";
                
           $resultado = $this->conexion_db->query($consulta);
-
+          
           if(!$resultado)
           {
 
