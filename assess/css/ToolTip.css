@@ -16,7 +16,7 @@
  box-shadow: 3px 3px 3px #333;
  display: none; /* El tooltip por defecto estara oculto */
  font-size: 0.8em;
- padding: 10px 10px 10px 10px;
+ padding: 5px 5px 5px 5px;
  max-width: 6000px;
  position: absolute; /* El tooltip se posiciona de forma absoluta para no modificar el aspezto del resto de la pagina */
  top: 45px; /* Posicion apartir de la parte superior del primer elemento padre con posicion relativa */
@@ -31,10 +31,12 @@
  /*display: inline;  Para mostrarlo simplemente usamos display block por ejemplo */
 }
 
-.cssToolTip .table
+/*evento ganador*/
+.cssToolTip .tabla_evento_ganador
 {
  width: 250px;    
  overflow: hidden;
+ margin-bottom: 0px;
 
 }
 
@@ -57,9 +59,25 @@ font-size: 13px;
 }
 
 .cssToolTip .texto_evento_ganador
-{
-     
+{     
 font-size: 11px;
+}
+
+/*filtro busqueda*/
+
+.cssToolTip .tabla_filtro_busqueda
+{
+ width: 250px;    
+ overflow: hidden;
+ margin-bottom: 0px;
+ font-size: 11px;
+ align-text: left;
+
+}
+
+.cssToolTip .tabla_filtro_busqueda tbody
+{
+   text-align: left;
 
 }
 
