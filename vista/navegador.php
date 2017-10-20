@@ -1,16 +1,15 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="espacio_nav" style="display: none;"></div>
     <nav class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sin-padding" id="nav_principal" align="center">
-         <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-             
-
-
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+               
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"> 
              <b>
-          <div class="cssToolTip">
+            <div class="cssToolTip">
               <b class="glyphicon glyphicon-envelope" aria-hidden="true"  data-container="body" data-toggle="tooltip" data-placement="bottom" title="Eventos ganadores"></b>
            
             <span id="evento_ganador">
               <div class="table-responsive">
-              <table  class="table">
+              <table  class="table tabla_evento_ganador">
                 <tr>
                   <td colspan=3 style='font-size:16px;'>
                     <font color=white>Evento Ganador del Día</font>
@@ -76,7 +75,37 @@
             </span> 
           </div>
           </b>
-
+          </div>
+            
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 sin-padding" > 
+              <input class="form-control" id="buscador" name="buscador"  placeholder="Que buscas?" style="margin-top: 5px;" >
+            <!--<i class="fa fa-spinner fa-spin show" style="font-size:24px"></i>-->
+            <div id="sugerencia_buscador">
+                <ul></ul>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 sin-padding" >
+            <div class="cssToolTip">
+                <i class="fa fa-filter" aria-hidden="true" data-container="body" data-toggle="tooltip" data-placement="bottom" title="Filtro"></i>
+                <span id="filtros_busqueda">
+                <div class="table-responsive">
+                <table  class="table tabla_filtro_busqueda">
+                    <tr>
+                    <td>
+                      <label class="radio-inline"><input type="radio" name="option_filter" value="2">Boliches</label>                    
+                      <label class="radio-inline"><input type="radio" name="option_filter" value="4">Bares</label>
+                      <label class="radio-inline"><input type="radio" name="option_filter" value="5">electronica</label>
+                    </td>               
+                  <tr>
+                    <td>
+                     <label class="radio-inline"><input type="radio" name="option_filter" value="3">Organizadores</label>
+                     <label class="radio-inline"><input type="radio" name="option_filter" value="">Todo</label>                     
+                    </td>    
+                  </tr>
+                </table>  
+              </div>
+            </div>
+          </div>    
 
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" style="float: left; font-size: 20px; margin-right: 0px;">
                    <span class="glyphicon glyphicon-menu-hamburger"></span>
