@@ -47,6 +47,68 @@ body
   font-size: 18px;
 
 }
+
+.glyphicon-envelope
+{
+
+  font-size: 25px;
+  color: #EDF1F4;
+  
+  margin-top: 9px;
+  cursor: pointer;
+  -webkit-transition: all 0.7s ease;
+  transition: all 0.7s ease;
+}
+
+.glyphicon-envelope:hover ,.glyphicon-envelope.activar
+{
+  color: #fff;
+  -webkit-box-shadow: #55306A 0px 0px 15px 5px ;
+  box-shadow: #55306A 0px 0px 15px 5px; 
+
+}
+
+#sugerencia_buscador ul
+{
+    background: #f0f0f0;
+    list-style: none;
+    padding: 0;
+    position: absolute;
+    z-index: 100;
+    
+}
+
+#sugerencia_buscador ul a li
+{
+    padding: 10px;
+    border-bottom: #bbb9b9 1px solid;
+    color: #55306A;
+    cursor: pointer;
+}
+
+.listado_buscador:hover
+{
+    color: black;
+    text-decoration: none;
+}
+.categorias
+{
+    background-color: #8b4cc7;
+    padding: 5px;
+    
+}
+.fa-filter
+{
+   margin-top: 5px;
+   font-size: 20px;
+   cursor: pointer;  
+}
+
+.fa-filter:hover ,.fa-filter.activar
+{
+  color: #A8AAAE;
+}
+
 #menu_user
 {
   margin-top: 5px;
@@ -93,6 +155,7 @@ footer
   color: #8b4cc7;
   font-size: 30px !important;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .fa-hand-o-right:hover
@@ -255,4 +318,103 @@ form .form-group textarea.form-control.error
 {
  border:2px solid red;
 
+}
+
+.colorfondo
+{
+    background-color: red;
+}
+
+.fotoperfil
+{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.colorfondo2
+{
+    background-color: yellow;
+}
+
+.lista-eventos
+{
+    background-color: #F2F2F2;
+}
+
+.nombre-perfil
+{
+    font-size: 20px;
+    text-align:center;
+}
+
+.informacion
+{
+    font-size: 15px;
+}
+
+.borde-info
+{
+    border-style: solid;
+    border-width: thin;
+    border-radius: 5px;
+}
+
+.columna-eventos
+{
+    text-align: center;
+    font-size: 12px;
+    margin-top:15px;
+}
+
+.numero-evento
+{
+    text-align: left;
+    font-size: 2em;
+    
+}
+
+.eventos
+{
+    margin-top: 5px;
+    height: 60px;
+    background-color: #BDBDBD;
+}
+
+.img-evento-perfil
+{
+    margin-top: 3px;
+    margin-left: 3px;
+    height: 54px;
+    width: 54px;
+}
+.nombre-evento-perfil
+{
+    margin-top: 3px;
+    margin-left: 3px;
+    font-size: 13px;
+}
+
+.fecha-evento-perfil
+{
+    margin-top: 2px;
+    margin-left: 3px;
+    font-size: 12px;
+    text-align: left;
+}
+
+.foto-evento-perfil
+{
+    border-radius: 50%;
+    margin-top: 3px;
+}
+
+.perfil-final
+{
+    height: 50px;
+}
+
+.nombre-cuenta a:link
+{
+    text-decoration:none;   
 }

@@ -387,6 +387,11 @@
                 imagen_evento:{
                         required: true
                         },
+                        
+                imagen_evento_e:{
+                        required: true
+                        },
+
 
                 descripcion_evento: { 
                         required: true,
@@ -437,6 +442,11 @@
                 imagen_evento:{
                         required:'Debe ingresar una portada para el evento'
                         },
+                        
+                imagen_evento_e:{
+                        required:'Debe ingresar una portada para el evento'
+                        },
+                        
                 descripcion_evento:{required:'Debe escribir una descripcion del evento',
                                     minlength:'La descripcion debe tener mas de 20 caracteres',
                                     character: 'No se aceptan caracteres especiales'}
@@ -553,6 +563,7 @@
 
 
     });
+    
 
     $('#crear_evento').click(function()
     {
