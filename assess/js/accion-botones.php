@@ -753,7 +753,7 @@ break;
             
         }    
 ?>
-        //buscador de boliches,eventos,etc
+        //buscador de boliches,eventos,etc en el navegador
       
         $("#buscador").keyup(function(){
             
@@ -768,7 +768,7 @@ break;
             $.ajax({
             type: "POST",
             url: "index.php",
-            data:{ textoBuscador: $(this).val(), opcionFiltro : filter_option},
+            data:{ buscadorNav: $(this).val(), opcionFiltro : filter_option},
             beforeSend: function(){	
             },
             success: function(data){
@@ -778,14 +778,13 @@ break;
             });
 	});
         
-        //filtro de busqueda
+        //filtro de busqueda del navegador
         
         $(".fa-filter").click(function()
         {
              $( "#filtros_busqueda" ).toggle("slow");
              
-             $(".fa-filter").toggleClass("activar");
-            
+             $(".fa-filter").toggleClass("activar");          
         });
         
         $( "input[name='option_filter']").click(function()

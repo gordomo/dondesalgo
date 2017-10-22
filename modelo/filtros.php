@@ -17,7 +17,7 @@
 
       } 
 
-      public function buscador($texto,$filtro_busqueda)
+      public function buscadorNav($texto,$filtro_busqueda)
       {
            
         $consulta="SELECT u.idusuarios, u.nombre, t.descripcion, u.tipo 
@@ -102,8 +102,9 @@
                 $combo.='<li>'.$fila["nombre"].'</li></a>';
                 $combo.='</a>';
             }     
-         }                                                             
-         die($combo);
+         }
+         
+         return $combo;
          
       }
 
