@@ -18,9 +18,9 @@
                   $.each(result, function(k, v) {
                     if(v.lat && v.lng){
                         locations.push({lat:v.lat, lng:v.lng});
-                        $("#navEventos").append("<li class='list-group-item'>"+v.nombre+
+                        $("#navEventos").append("<li class='list-group-item'>"+v.nombreevento+
                             "<span class='nope'><br>"
-                            +v.nombreevento+"<br>"
+                            +v.nombre+"<br>"
                             +v.direccion+"<br>"
                             +v.descripcion+"<br>"
                             +v.horainicio+"<br>"

@@ -10,8 +10,7 @@
         </div>
 
         <div class="nav" style=" text-align: center;" >
-            <a id="prev2" href="#"><span class="glyphicon glyphicon-chevron-left"></span></a> 
-            <a id="next2" href="#"><span class="glyphicon glyphicon-chevron-right"></span></a>
+            <div>aca va el buscador</div>
             <br>
             <ul class='list-group' id="navEventos"></ul>
         </div>

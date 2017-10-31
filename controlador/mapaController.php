@@ -1,7 +1,7 @@
 <?php
 
-$action = (!empty($_GET['action'])) ? $_GET['action'] : '';
 require_once('../modelo/evento.php');
+$action = (!empty($_GET['action'])) ? $_GET['action'] : '';
 
 switch ($action) {
 	case 'getEventos':
