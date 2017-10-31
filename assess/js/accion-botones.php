@@ -657,12 +657,21 @@ break;
             $(".formulario").hide();
 
         }
+        
+        //al votar el usuario
 
         $('.icono_voto').click(function (e) 
         {
             e.preventDefault(); 
-            id_form_evento = $(this).next().val();
-                       
+            id_form_evento = $(this).next().attr('id');
+            
+            var icono_voto = $(this);
+            var enviar_voto = $("#"+id_form_evento).children(".enviar_voto").val();
+            var id_evento = $("#"+id_form_evento).children("#id_evento").val();
+            var fecha_inicio = $("#"+id_form_evento).children("#fecha_inicio").val();
+            var hora_inicio = $("#"+id_form_evento).children("#hora_inicio").val();
+            var mensaje_oculto_form = $("#"+id_form_evento).children("#mensaje_oculto_form").val();  
+            var tipo_hora = $(this).data("tipo-hora");
 <?php
             if (isset($_COOKIE['no_mensaje']) || isset($no_mensaje)) 
             {
@@ -677,7 +686,7 @@ break;
 ?>
                 $.confirm({
                     title: '¡Atencion!',
-                    content: 'Solo podras votar 1 evento por dia. Estas seguro que deseas votar a este evento?' +
+                    content: 'Solo podras votar 1 evento dentro del grupo de eventos que compita en una fecha determinada. Estas seguro que deseas votar a este evento?' +
                             '<div class="checkbox"><label><input type="checkbox" name="mensaje_oculto" class="mensaje_oculto" > No mostrar este mensaje</label></div>',
                     type: 'purple',
                     typeAnimated: true,
@@ -697,9 +706,28 @@ break;
                                         else
                                         {
                                            $("#mensaje_oculto_form").val(0);                                            
-                                        }    
+                                        }
 
-                                        $("#form_enviar_voto"+id_form_evento).submit();
+                                        $.ajax({
+                                        type: "POST",
+                                        url: "controlador.php",
+                                        data:{ votar_ajax: votar_ajax, id_evento: id_evento, fecha_inicio: fecha_inicio, hora_inicio: hora_inicio, mensaje_oculto_form: mensaje_oculto_form},
+                                        beforeSend: function(){	
+                                        },
+                                        success: function(data){
+                                                                                      
+                                             $(icono_voto).fadeOut("fast", function() 
+                                             {
+                                                $(icono_voto).css({"color": "#A8AAAE", "pointer-events": "none"});                                             
+                                                $(icono_voto).fadeIn("slow");
+                                             });
+                                             
+                                             $
+                                             
+                                        }
+                                        });
+
+                                        //$("#form_enviar_voto"+id_form_evento).submit();
                                     }
                                 },
 
@@ -760,9 +788,7 @@ break;
             filter_option= '';
             if($( "input[name='option_filter']").is(':checked'))
             {
-              filter_option = $( "input[name='option_filter']:checked" ).val();
-              
-              console.log(filter_option);
+              filter_option = $( "input[name='option_filter']:checked" ).val();             
             }
             
             $.ajax({
