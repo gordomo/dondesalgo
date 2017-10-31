@@ -966,6 +966,23 @@
             
             
         break;
+        case (isset($_POST['buscadorNav'])):
+
+            require_once('modelo/filtros.php');
+            
+            $texto = $_POST['buscadorNav'];
+            $filtro_busqueda = $_POST['opcionFiltro'];
+                                
+            $filtros= new filtros();
+            
+            if($texto)
+            {
+              die($filtros->buscadorNav($texto,$filtro_busqueda));  
+            }
+           
+            die();
+            
+        break;
         case (isset($_GET['cerrar_sesion'])):
 
             session_destroy();

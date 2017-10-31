@@ -27,6 +27,7 @@
     <script src="assess/js/navegador-trasladable.js"></script>
     <script src="assess/js/galeria-fotos.js"></script>
     <script src="assess/js/jquery.popmenu.min.js"></script>
+    <script src="assess/js/resize.js"></script>
     <script>
             $(document).ready(function()
             {

@@ -773,7 +773,9 @@
 
         });
 
+
         <?php
+
         if (isset($_SESSION['id'])) 
         {
 
@@ -799,24 +801,49 @@
 
             
         }    
-        ?>
 
-    /*
-     
-     var url = "index.php";
-     var datosForm =$(".form_enviar_voto").serialize();
-     
-     $.ajax({                        
-     type: "POST",                 
-     url: url,                     
-     data: {action:"enviar_voto" ,datosForm },
-     success: function(data)             
-     {
-     alert('genial');              
-     }
-     });
-     
-     */
- });
+?>
+        //buscador de boliches,eventos,etc en el navegador
+      
+        $("#buscador").keyup(function(){
+            
+            filter_option= '';
+            if($( "input[name='option_filter']").is(':checked'))
+            {
+              filter_option = $( "input[name='option_filter']:checked" ).val();
+              
+              console.log(filter_option);
+            }
+            
+            $.ajax({
+            type: "POST",
+            url: "index.php",
+            data:{ buscadorNav: $(this).val(), opcionFiltro : filter_option},
+            beforeSend: function(){	
+            },
+            success: function(data){
+                    $("#sugerencia_buscador").show();
+                    $("#sugerencia_buscador ul").html(data);
+            }
+            });
+	});
+        
+        //filtro de busqueda del navegador
+        
+        $(".fa-filter").click(function()
+        {
+             $( "#filtros_busqueda" ).toggle("slow");
+             
+             $(".fa-filter").toggleClass("activar");          
+        });
+        
+        $( "input[name='option_filter']").click(function()
+        {      
+            $(".fa-filter").toggleClass("activar");
+            $( "#filtros_busqueda" ).toggle("show");
+        });
+          
+    });
+
 
 </script>

@@ -68,6 +68,47 @@ body
 
 }
 
+#sugerencia_buscador ul
+{
+    background: #f0f0f0;
+    list-style: none;
+    padding: 0;
+    position: absolute;
+    z-index: 100;
+    
+}
+
+#sugerencia_buscador ul a li
+{
+    padding: 10px;
+    border-bottom: #bbb9b9 1px solid;
+    color: #55306A;
+    cursor: pointer;
+}
+
+.listado_buscador:hover
+{
+    color: black;
+    text-decoration: none;
+}
+.categorias
+{
+    background-color: #8b4cc7;
+    padding: 5px;
+    
+}
+.fa-filter
+{
+   margin-top: 5px;
+   font-size: 20px;
+   cursor: pointer;  
+}
+
+.fa-filter:hover ,.fa-filter.activar
+{
+  color: #A8AAAE;
+}
+
 #menu_user
 {
   margin-top: 5px;
