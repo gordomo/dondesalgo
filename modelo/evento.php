@@ -1,7 +1,7 @@
 <?php
 
-  require_once("modelo/conexion.php");
-  require_once("modelo/logs.php");
+  require_once("conexion.php");
+  require_once("logs.php");
 
    
   class evento extends conexion
@@ -118,7 +118,7 @@
           $consulta .= "ORDER BY fechainicio ASC;";
                
           $resultado = $this->conexion_db->query($consulta);
-
+          
           if(!$resultado)
           {
 
