@@ -93,29 +93,21 @@
               $tipo = 2;
             break;
           }
-
-
-          $fechas=array();
-
-          for($i=0; $i <= 7; $i++)
-          {
-            $dia_siguiente = date('Y-m-d', strtotime("+".$i. " day"));
-
-            $fechas[] = $dia_siguiente;
-
-          } 
+          
+          $hoy = date('Y-m-d');
+          $dia_siguiente = date('Y-m-d', strtotime("+7 day"));
 
           //pregunta si hay eventos en la semana
           $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
                             DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado
                       FROM eventos 
-
-                      WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$fechas[7]' ";
+                      WHERE tipo = $tipo AND CONCAT(fechainicio ,' ',horainicio) >= NOW() AND fechainicio BETWEEN '$hoy' AND '$dia_siguiente'  ";
+ 
           if(!$todos){
               $consulta .= "AND estado = 1 "; 
           }
           
-          $consulta .= "ORDER BY fechainicio ASC;";
+          $consulta .= "ORDER BY fechainicio ASC, horainicio  ASC;";
                
           $resultado = $this->conexion_db->query($consulta);
 
@@ -132,11 +124,9 @@
 
           }
 
-
           if($resultado->num_rows > 0)
           {
-
-              
+             
               $this->conexion_db->close();
 
               return $resultado;
@@ -153,13 +143,13 @@
                 $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
                                   DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin, fotoperfil, fotoevento, estado
                             FROM eventos 
-                            WHERE tipo = $tipo AND fechainicio BETWEEN '$fechas[0]' AND '$en_mes' ";
+                            WHERE tipo = $tipo AND CONCAT(fechainicio ,' ',horainicio) >= NOW() AND fechainicio BETWEEN '$hoy' AND '$en_mes' ";
                 
                 if(!$todos){
               $consulta .= "AND estado <> 0 "; 
           }
           
-          $consulta .= "ORDER BY fechainicio ASC;";
+          $consulta .= "ORDER BY fechainicio ASC, horainicio  ASC;";
 
                 $resultado = $this->conexion_db->query($consulta);
 
@@ -193,14 +183,14 @@
                                         DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado 
                                   FROM eventos 
 
-                                  WHERE tipo = $tipo AND fechainicio >= '$fechas[0]' ";
+                                  WHERE tipo = $tipo AND CONCAT(fechainicio ,' ',horainicio) >= NOW() AND fechainicio >= '$hoy' ";
                       
                       if(!$todos){
                          $consulta .= "AND estado <> 0 "; 
                       }
 
 
-                        $consulta .= "ORDER BY fechainicio ASC;"; 
+                        $consulta .= "ORDER BY fechainicio ASC, horainicio  ASC;"; 
 
                       $resultado = $this->conexion_db->query($consulta);
             
@@ -288,8 +278,8 @@
                     $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
                                       DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado 
                                 FROM eventos 
-                                WHERE tipo = $tipo AND estado = $estado AND fechainicio BETWEEN '$hoy' AND '$en_semana' 
-                                ORDER BY fechainicio ASC;"; 
+                                WHERE tipo = $tipo AND estado = $estado AND CONCAT(fechainicio ,' ',horainicio) >= NOW() AND fechainicio BETWEEN '$hoy' AND '$en_semana' 
+                                ORDER BY fechainicio ASC, horainicio  ASC;"; 
 
                     $filtro_dia="semana";
 
@@ -303,8 +293,8 @@
                     $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
                                       DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento, estado 
                                 FROM eventos 
-                                WHERE tipo = $tipo AND estado = $estado AND fechainicio BETWEEN '$hoy' AND '$en_semana'
-                                ORDER BY fechainicio ASC;";
+                                WHERE tipo = $tipo AND estado = $estado AND CONCAT(fechainicio ,' ',horainicio) >= NOW() AND fechainicio BETWEEN '$hoy' AND '$en_semana'
+                                ORDER BY fechainicio ASC, horainicio  ASC;";
 
                     $filtro_dia="mes";             
 
@@ -317,8 +307,8 @@
                     $consulta="SELECT ideventos, idusuarios, tipo, nombre, nombreevento, direccion , descripcion,  DATE_FORMAT(fechainicio,'%d/%m/%Y') as fecha_inicio, 
                                         DATE_FORMAT(horainicio,'%H:%i') as horainicio, DATE_FORMAT(horafin,'%H:%i') as horafin,fotoperfil, fotoevento,estado 
                                FROM eventos 
-                               WHERE tipo = $tipo AND fechainicio >= '$hoy' AND estado = $estado
-                               ORDER BY fechainicio ASC;";
+                               WHERE tipo = $tipo AND estado = $estado AND CONCAT(fechainicio ,' ',horainicio) >= NOW() AND fechainicio >= '$hoy' 
+                               ORDER BY fechainicio ASC, horainicio  ASC;";
 
                     $filtro_dia="todos";           
         
@@ -594,6 +584,87 @@
                       $this->conexion_db->close();
                       
                       return $resultadoProx;
+      }
+      
+      //IDENTIFICA A CADA EVENTO CON UN RANGO ASI PODEMOS DESHABILITAR POR JQUERY LOS EVENTOS VOTADOS
+      
+      public function getRangoEvento($fechaInicio, $horaInicio)
+      {              
+            $hoy = date("d/m/Y");
+            $dia_siguiente = date('d/m/Y', strtotime("+1 day"));
+
+            $hora_evento= strtotime($horaInicio);
+            $hora_desde=strtotime('21:00');
+            $hora_hasta=strtotime('03:00');
+
+            $rango = "";           
+
+            if(($hoy == $fechaInicio  && $hora_evento >= $hora_desde) || ($dia_siguiente == $fechaInicio && $hora_evento <= $hora_hasta))
+            {
+                $rango = 1;                  
+            }
+            else
+            {
+
+                $dia_hasta = date('d/m/Y', strtotime("+2 day"));
+
+                if(($dia_siguiente == $fechaInicio  && $hora_evento >= $hora_desde) || ($dia_hasta == $fechaInicio && $hora_evento <= $hora_hasta))
+                {           
+                     $rango = 2;
+                }
+                else
+                {                       
+                     $dia_siguiente = date('d/m/Y', strtotime("+2 day"));
+                     $dia_hasta = date('d/m/Y', strtotime("+3 day"));
+
+                     if(($dia_siguiente == $fechaInicio  && $hora_evento >= $hora_desde) || ($dia_hasta == $fechaInicio && $hora_evento <= $hora_hasta))
+                     {           
+                           $rango = 3;
+                     }
+                     else
+                     {
+                         $dia_siguiente = date('d/m/Y', strtotime("+3 day"));
+                         $dia_hasta = date('d/m/Y', strtotime("+4 day"));
+
+                         if(($dia_siguiente == $fechaInicio  && $hora_evento >= $hora_desde) || ($dia_hasta == $fechaInicio && $hora_evento <= $hora_hasta))
+                         {           
+                              $rango = 4;
+                         }
+                         else
+                         {                       
+                              $dia_siguiente = date('d/m/Y', strtotime("+4 day"));
+                              $dia_hasta = date('d/m/Y', strtotime("+5 day"));
+
+                              if(($dia_siguiente == $fechaInicio  && $hora_evento >= $hora_desde) || ($dia_hasta == $fechaInicio && $hora_evento <= $hora_hasta))
+                              {           
+                                    $rango = 5;
+                              }
+                              else
+                             {
+                                 $dia_siguiente = date('d/m/Y', strtotime("+5 day"));
+                                 $dia_hasta = date('d/m/Y', strtotime("+6 day"));
+
+                                 if(($dia_siguiente == $fechaInicio  && $hora_evento >= $hora_desde) || ($dia_hasta == $fechaInicio && $hora_evento <= $hora_hasta))
+                                 {           
+                                      $rango = 6;
+                                 }
+                                 else
+                                 {                       
+                                      $dia_siguiente = date('d/m/Y', strtotime("+6 day"));
+                                      $dia_hasta = date('d/m/Y', strtotime("+7 day"));
+
+                                      if(($dia_siguiente == $fechaInicio  && $hora_evento >= $hora_desde) || ($dia_hasta == $fechaInicio && $hora_evento <= $hora_hasta))
+                                      {           
+                                            $rango = 7;
+                                      }             
+                                 }    
+                             } 
+                         }    
+                     } 
+                }     
+            }
+            
+            return $rango;
       }
       
       

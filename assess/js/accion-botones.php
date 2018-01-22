@@ -664,14 +664,13 @@ break;
         {
             e.preventDefault(); 
             id_form_evento = $(this).next().attr('id');
-            
-            var icono_voto = $(this);
-            var enviar_voto = $("#"+id_form_evento).children(".enviar_voto").val();
+                               
+            var icono_voto = $(this).data("rango");        
+            var votar_ajax = $("#"+id_form_evento).children(".enviar_voto").val();
             var id_evento = $("#"+id_form_evento).children("#id_evento").val();
             var fecha_inicio = $("#"+id_form_evento).children("#fecha_inicio").val();
             var hora_inicio = $("#"+id_form_evento).children("#hora_inicio").val();
             var mensaje_oculto_form = $("#"+id_form_evento).children("#mensaje_oculto_form").val();  
-            var tipo_hora = $(this).data("tipo-hora");
 <?php
             if (isset($_COOKIE['no_mensaje']) || isset($no_mensaje)) 
             {
@@ -710,20 +709,20 @@ break;
 
                                         $.ajax({
                                         type: "POST",
-                                        url: "controlador.php",
+                                        url: "index.php",
                                         data:{ votar_ajax: votar_ajax, id_evento: id_evento, fecha_inicio: fecha_inicio, hora_inicio: hora_inicio, mensaje_oculto_form: mensaje_oculto_form},
                                         beforeSend: function(){	
                                         },
                                         success: function(data){
-                                                                                      
-                                             $(icono_voto).fadeOut("fast", function() 
+
+                                            $("#"+id_form_evento).html("");
+                                            
+                                             $('[data-rango='+icono_voto+']').fadeOut("fast", function() 
                                              {
-                                                $(icono_voto).css({"color": "#A8AAAE", "pointer-events": "none"});                                             
-                                                $(icono_voto).fadeIn("slow");
+                                                $('[data-rango='+icono_voto+']').addClass("no_vota");                                             
+                                                $('[data-rango='+icono_voto+']').fadeIn("slow");
                                              });
-                                             
-                                             $
-                                             
+                                                                                    
                                         }
                                         });
 

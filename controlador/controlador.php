@@ -977,10 +977,8 @@
                     break;
 
                   }
-
-                  $resulEventos = $evento->getEventos();   
-                  echo "ok";
-                  exit();
+  
+                  die("ok");
 
             break;
         case (isset($_GET['usuario'])):
@@ -1079,6 +1077,7 @@
                }
 
                $resulEventos = $eventos->getEventos($todos);
+               
 
             }  
 
