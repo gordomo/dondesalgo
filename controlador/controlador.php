@@ -887,7 +887,7 @@
 
         break;
         case (isset($_POST['enviar_voto'])):
-
+            
               require_once('modelo/voto.php');
               require_once('modelo/evento.php');
 
@@ -934,6 +934,53 @@
 
 
         break;
+        case (isset($_POST['votar_ajax'])):
+
+                  require_once('modelo/voto.php');
+                  require_once('modelo/evento.php');
+
+                  $ocultar_mensaje=$_POST['mensaje_oculto_form'];
+
+                  if($ocultar_mensaje == 1)
+                  {               
+                      setcookie("no_mensaje", $ocultar_mensaje ,time()+86400);
+
+                      $no_mensaje="1";                     
+                  }
+
+
+                  $evento= new evento();
+
+                  $idevento=$_POST['id_evento'];
+
+                  $fecha_inicio=$_POST['fecha_inicio'];
+
+                  $fecha_inicio = explode('/',$fecha_inicio);
+
+                  $fecha_inicio = $fecha_inicio[2].'-'.$fecha_inicio[1].'-'.$fecha_inicio[0];
+
+                  $hora_inicio= $_POST['hora_inicio'];
+
+                  $fechaYhora= $fecha_inicio. " " . $hora_inicio;
+
+
+                  $voto= new voto(); 
+
+                  $voto->setVotoUsuario($idevento,$fechaYhora);
+
+                  $voto->setVotoEvento($idevento);
+
+                  switch (true) 
+                  {
+                    case (isset($_POST['enviar_voto'])):
+                      $acceso_boliches="si";
+                    break;
+
+                  }
+  
+                  die("ok");
+
+            break;
         case (isset($_GET['usuario'])):
             
             if(is_numeric($_GET['usuario']))
@@ -1030,6 +1077,7 @@
                }
 
                $resulEventos = $eventos->getEventos($todos);
+               
 
             }  
 

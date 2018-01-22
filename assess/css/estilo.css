@@ -150,6 +150,13 @@ footer
 
 }
 
+.fa-hand-o-right.icono_voto.no_vota
+{
+   color: #A8AAAE;
+   pointer-events: none; 
+    
+}
+
 .fa-hand-o-right
 {
   color: #8b4cc7;
@@ -162,6 +169,8 @@ footer
 {
   color: #3F1468;
 }
+
+
 
 #secciones
 {
