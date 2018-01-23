@@ -740,7 +740,7 @@
                     typeAnimated: true,
                     buttons: {
                         OK:
-                        {
+                        {                          
                             btnClass: 'btn-purple',
 
                             action: function ()
@@ -749,42 +749,34 @@
 
                                 if(checkbox == true)
                                 {
-                                    btnClass: 'btn-purple',
+                                   $("#mensaje_oculto_form").val(1);     
+                                }
+                                else
+                                {
+                                   $("#mensaje_oculto_form").val(0);                                            
+                                }
 
-                                    action: function ()
-                                    {
-                                        var checkbox = $('.mensaje_oculto').prop('checked');
-                                        
-                                        if(checkbox == true)
-                                        {
-                                           $("#mensaje_oculto_form").val(1);     
-                                        }
-                                        else
-                                        {
-                                           $("#mensaje_oculto_form").val(0);                                            
-                                        }
+                                $.ajax({
+                                type: "POST",
+                                url: "index.php",
+                                data:{ votar_ajax: votar_ajax, id_evento: id_evento, fecha_inicio: fecha_inicio, hora_inicio: hora_inicio, mensaje_oculto_form: mensaje_oculto_form},
+                                beforeSend: function(){	
+                                },
+                                success: function(data){
 
-                                        $.ajax({
-                                        type: "POST",
-                                        url: "index.php",
-                                        data:{ votar_ajax: votar_ajax, id_evento: id_evento, fecha_inicio: fecha_inicio, hora_inicio: hora_inicio, mensaje_oculto_form: mensaje_oculto_form},
-                                        beforeSend: function(){	
-                                        },
-                                        success: function(data){
+                                    $("#"+id_form_evento).html("");
 
-                                            $("#"+id_form_evento).html("");
-                                            
-                                             $('[data-rango='+icono_voto+']').fadeOut("fast", function() 
-                                             {
-                                                $('[data-rango='+icono_voto+']').addClass("no_vota");                                             
-                                                $('[data-rango='+icono_voto+']').fadeIn("slow");
-                                             });
-                                                                                    
-                                        }
-                                        });
+                                     $('[data-rango='+icono_voto+']').fadeOut("fast", function() 
+                                     {
+                                        $('[data-rango='+icono_voto+']').addClass("no_vota");                                             
+                                        $('[data-rango='+icono_voto+']').fadeIn("slow");
+                                     });
 
-                                        //$("#form_enviar_voto"+id_form_evento).submit();
-                                    }
+                                }
+                                });
+
+                                //$("#form_enviar_voto"+id_form_evento).submit();
+                            }
                         },
                        NO:
                        {
